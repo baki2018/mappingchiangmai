@@ -1,0 +1,296 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Create Map Sample | Longdo Map</title>
+    <style type="text/css">
+        html {
+            height: 100%;
+        }
+
+        body {
+            margin: 0px;
+            height: 100%;
+        }
+
+        #map {
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body onload="init();">
+    <div id="map"></div>
+</body>
+<script type="text/javascript" src="https://api.longdo.com/map/?key=5fd0f788c78c9ccfc192a5ea93d831ec"></script>
+<script src="heatmap/heatmap.js"></script>
+<script src="heatmap/longdomap-heatmap.js"></script>
+<script>
+    var marketData;
+    var testData = {
+            data: [
+                { "ampherid": 1, "name": 'DoiSaket', "name_th": 'ดอยสะเก็ด', lon: 99.220963, lat: 18.944284, "tested": 100, "hiv_positive": 5 },
+                { "ampherid": 2, "name": 'doilo', "name_th": 'ดอยหล่อ', lon: 98.749580, lat: 18.536909, "tested": 100, "hiv_positive": 5 },
+                { "ampherid": 3, "name": 'doitao', "name_th": 'ดอยเต่า', lon: 98.672333, lat: 17.910469, "tested": 100, "hiv_positive": 5 },
+                { "ampherid": 4, "name": 'MaeRim', "name_th": 'แม่ริม', lon: 98.877211, lat: 18.943310, "tested": 100, "hiv_positive": 5 },
+                { "ampherid": 5, "name": 'SanSai', "name_th": 'สันทราย', lon: 99.030075, lat: 18.957110, "tested": 100, "hiv_positive": 5 },
+                { "ampherid": 6, "name": 'MueangChiangMai', "name_th": 'เมือง', lon: 98.955917, lat: 18.798743, "tested": 100, "hiv_positive": 5 },
+                { "ampherid": 7, "name": 'Samoeng', "name_th": 'สะเมิง', lon: 98.635941, lat: 18.919603, "tested": 100, "hiv_positive": 5 },
+                { "ampherid": 8, "name": 'MaeTaeng', "name_th": 'แม่แตง', lon: 98.850174, lat: 19.185705, "tested": 100, "hiv_positive": 5 },
+                { "ampherid": 9, "name": 'MaeWang', "name_th": 'แม่วาง', lon: 98.653793, lat: 18.679097, "tested": 100, "hiv_positive": 5 },
+                { "ampherid": 10, "name": 'HangDong', "name_th": 'หางดง', lon: 98.882103, lat: 18.735029, "tested": 100, "hiv_positive": 15 },
+                { "ampherid": 11, "name": 'saraphi', "name_th": 'สารภี', lon: 99.019432, lat: 18.698285, "tested": 100, "hiv_positive": 15 },
+                { "ampherid": 12, "name": 'SanKamphaeng', "name_th": 'สันกำแพง', lon: 99.160538, lat: 18.738931, "tested": 100, "hiv_positive": 15 },
+                { "ampherid": 13, "name": 'MaeOn', "name_th": 'แม่ออน', lon: 99.296494, lat: 18.746734, "tested": 100, "hiv_positive": 15 },
+                { "ampherid": 14, "name": 'ChomThong', "name_th": 'จอมทอง', lon: 98.601608, lat: 18.375705, "tested": 100, "hiv_positive": 15 },
+                { "ampherid": 15, "name": 'SanPaTong', "name_th": 'สันป่าตอง', lon: 98.876266, lat: 18.610133, "tested": 100, "hiv_positive": 15 },
+                { "ampherid": 16, "name": 'Hord', "name_th": 'ฮอด', lon: 98.472519, lat: 18.117466, "tested": 100, "hiv_positive": 15 },
+                { "ampherid": 17, "name": 'Omkoi', "name_th": 'อมก๋อย', lon: 98.333817, lat: 17.684914, "tested": 100, "hiv_positive": 15 },
+                { "ampherid": 18, "name": 'ChiangDao', "name_th": 'เชียงดาว', lon: 98.902359, lat: 19.516110, "tested": 100, "hiv_positive": 15 },
+                { "ampherid": 19, "name": 'MaeChaem', "name_th": 'แม่แจ่ม', lon: 98.310471, lat: 18.602974, "tested": 100, "hiv_positive": 15 },
+                { "ampherid": 20, "name": 'Phrao', "name_th": 'พร้าว', lon: 99.217873, lat: 19.296886, "tested": 100, "hiv_positive": 55 },
+                { "ampherid": 21, "name": 'ChaiPrakan', "name_th": 'ไชยปราการ', lon: 99.164658, lat: 19.690759, "tested": 100, "hiv_positive": 55 },
+                { "ampherid": 22, "name": 'Fang', "name_th": 'ฝาง', lon: 99.161911, lat: 19.893629, "tested": 100, "hiv_positive": 55 },
+                { "ampherid": 23, "name": 'MaeAi', "name_th": 'แม่อาย', lon: 99.323959, lat: 20.009807, "tested": 100, "hiv_positive": 55 },
+                { "ampherid": 24, "name": 'wianghaeng', "name_th": 'เวียงแหง', lon: 98.641434, lat: 19.592461, "tested": 100, "hiv_positive": 55 },
+                { "ampherid": 25, "name": 'GalyaniVadhana', "name_th": 'กัลยาณิวัฒนา', lon: 98.307037, lat: 19.004672, "tested": 100, "hiv_positive": 55 },
+                { "tumbounid": 1, "name": 'ChoengDoi', "name_th": 'เชิงดอย', lon: 99.170837, lat: 18.900440, "tested": 100, "hiv_positive": 10, "ampherid": 1 },
+                { "tumbounid": 2, "name": 'SanPuLoei', "name_th": 'สันปูเลย', lon: 99.070158, lat: 18.808574, "tested": 100, "hiv_positive": 20, "ampherid": 1 },
+                { "tumbounid": 3, "name": 'LuangNuea', "name_th": 'ลวงเหนือ', lon: 99.132814, lat: 18.978052, "tested": 100, "hiv_positive": 30, "ampherid": 1 },
+                { "tumbounid": 4, "name": 'PaPong', "name_th": 'ป่าป้อง', lon: 99.157104, lat: 18.850087, "tested": 100, "hiv_positive": 40, "ampherid": 1 },
+                { "tumbounid": 5, "name": 'SangaBan', "name_th": 'สง่าบ้าน', lon: 99.125004, lat: 18.828722, "tested": 100, "hiv_positive": 50, "ampherid": 1 },
+                { "tumbounid": 6, "name": 'PaLan', "name_th": 'ป่าลาน', lon: 99.105070, lat: 18.835892, "tested": 100, "hiv_positive": 60, "ampherid": 1 },
+                { "tumbounid": 7, "name": 'TalatKhwan', "name_th": 'ตลาดขวัญ', lon: 99.087324, lat: 18.842045, "tested": 100, "hiv_positive": 70, "ampherid": 1 },
+                { "tumbounid": 8, "name": 'SamranRat', "name_th": 'สำราญราษฎร์', lon: 99.094706, lat: 18.806706, "tested": 100, "hiv_positive": 80, "ampherid": 1 },
+                { "tumbounid": 9, "name": 'MaeKhue', "name_th": 'แม่คือ', lon: 99.100499, lat: 18.786677, "tested": 100, "hiv_positive": 90, "ampherid": 1 },
+                { "tumbounid": 10, "name": 'TalatYai', "name_th": 'ตลาดใหญ่', lon: 99.122772, lat: 18.810443, "tested": 100, "hiv_positive": 10, "ampherid": 1 },
+                { "tumbounid": 11, "name": 'MaeHoiNgoen', "name_th": 'แม่ฮ้อยเงิน', lon: 99.149809, lat: 18.806685, "tested": 100, "hiv_positive": 20, "ampherid": 1 },
+                { "tumbounid": 12, "name": 'MaePong', "name_th": 'แม่โป่ง', lon: 99.200792, lat: 18.846431, "tested": 100, "hiv_positive": 30, "ampherid": 1 },
+                { "tumbounid": 13, "name": 'PaMiang', "name_th": 'ป่าเมี่ยง', lon: 99.290571, lat: 18.999803, "tested": 100, "hiv_positive": 40, "ampherid": 1 },
+                { "tumbounid": 14, "name": 'ThepSadet', "name_th": 'เทพเสด็จ', lon: 99.321985, lat: 18.954837, "tested": 100, "hiv_positive": 50, "ampherid": 1 },
+                { "tumbounid": 15, "name": 'SongKhwae', "name_th": 'สองแคว', lon: 98.840947, lat: 18.503866, "tested": 100, "hiv_positive": 60, "ampherid": 2 },
+                { "tumbounid": 16, "name": 'YangKhram', "name_th": 'ยางคราม', lon: 98.786917, lat: 18.557252, "tested": 100, "hiv_positive": 70, "ampherid": 2 },
+                { "tumbounid": 17, "name": 'SantiSuk', "name_th": 'สันติสุข', lon: 98.719883, lat: 18.565632, "tested": 100, "hiv_positive": 80, "ampherid": 2 },
+                { "tumbounid": 18, "name": 'DoiLo', "name_th": 'ดอยหล่อ', lon: 98.767605, lat: 18.495319, "tested": 100, "hiv_positive": 90, "ampherid": 2 },
+                { "tumbounid": 19, "name": 'DoiTao', "name_th": 'ดอยเต่า', lon: 98.733101, lat: 17.909816, "tested": 100, "hiv_positive": 10, "ampherid": 3 },
+                { "tumbounid": 20, "name": 'ThaDuea', "name_th": 'ท่าเดื่อ', lon: 98.668041, lat: 17.973835, "tested": 100, "hiv_positive": 20, "ampherid": 3 },
+                { "tumbounid": 21, "name": 'MuetKa', "name_th": 'มืดกา', lon: 98.586245, lat: 17.878860, "tested": 100, "hiv_positive": 30, "ampherid": 3 },
+                { "tumbounid": 22, "name": 'BanAen', "name_th": 'บ้านแอ่น', lon: 98.627787, lat: 18.055784, "tested": 100, "hiv_positive": 40, "ampherid": 3 },
+                { "tumbounid": 23, "name": 'BongTan', "name_th": 'บงตัน', lon: 98.657656, lat: 18.021017, "tested": 100, "hiv_positive": 50, "ampherid": 3 },
+                { "tumbounid": 24, "name": 'PongThung', "name_th": 'โปงทุ่ง', lon: 98.782024, lat: 17.873713, "tested": 100, "hiv_positive": 60, "ampherid": 3 },
+                { "tumbounid": 25, "name": 'RimTai', "name_th": 'ริมใต้', lon: 98.948697, lat: 18.914122, "tested": 100, "hiv_positive": 70, "ampherid": 4 },
+                { "tumbounid": 26, "name": 'RimNuea', "name_th": 'ริมเหนือ', lon: 98.951379, lat: 18.928219, "tested": 100, "hiv_positive": 80, "ampherid": 4 },
+                { "tumbounid": 27, "name": 'SanPong', "name_th": 'สันโป่ง', lon: 98.952913, lat: 18.953782, "tested": 100, "hiv_positive": 90, "ampherid": 4 },
+                { "tumbounid": 28, "name": 'Khilekmerim', "name_th": 'ขี้เหล็ก', lon: 98.938751, lat: 19.011489, "tested": 100, "hiv_positive": 10, "ampherid": 4 },
+                { "tumbounid": 29, "name": 'Saluang', "name_th": 'สะลวง', lon: 98.828888, lat: 19.011813, "tested": 100, "hiv_positive": 20, "ampherid": 4 },
+                { "tumbounid": 30, "name": 'HuaiSai', "name_th": 'ห้วยทราย', lon: 98.899269, lat: 18.968961, "tested": 100, "hiv_positive": 30, "ampherid": 4 },
+                { "tumbounid": 31, "name": 'MaeRaem', "name_th": 'แม่แรม', lon: 98.863220, lat: 18.923825, "tested": 100, "hiv_positive": 40, "ampherid": 4 },
+                { "tumbounid": 32, "name": 'PongYaeng', "name_th": 'โป่งแยง', lon: 98.818932, lat: 18.889396, "tested": 100, "hiv_positive": 50, "ampherid": 4 },
+                { "tumbounid": 33, "name": 'MaeSa', "name_th": 'แม่สา', lon: 98.944416, lat: 18.897517, "tested": 100, "hiv_positive": 60, "ampherid": 4 },
+                { "tumbounid": 34, "name": 'DonKaeo', "name_th": '	ดอนแก้ว', lon: 98.930855, lat: 18.861783, "tested": 100, "hiv_positive": 70, "ampherid": 4 },
+                { "tumbounid": 35, "name": 'MueangKaeo', "name_th": 'เหมืองแก้ว', lon: 98.982267, lat: 18.901983, "tested": 100, "hiv_positive": 80, "ampherid": 4 },
+                { "tumbounid": 36, "name": 'MaeFaekMai', "name_th": 'แม่แฝกใหม่', lon: 99.013939, lat: 18.993960, "tested": 100, "hiv_positive": 90, "ampherid": 5 },
+                { "tumbounid": 37, "name": 'MaeFaek', "name_th": 'แม่แฝก', lon: 99.001064, lat: 19.050760, "tested": 100, "hiv_positive": 10, "ampherid": 5 },
+                { "tumbounid": 38, "name": 'PaPhai', "name_th": 'ป่าไผ่', lon: 99.053164, lat: 18.918710, "tested": 100, "hiv_positive": 20, "ampherid": 5 },
+                { "tumbounid": 39, "name": 'NongHan', "name_th": 'หนองหาร', lon: 99.012651, lat: 18.929021, "tested": 100, "hiv_positive": 30, "ampherid": 5 },
+                { "tumbounid": 40, "name": 'NongYaeng', "name_th": 'หนองแหย่ง', lon: 99.100885, lat: 18.910996, "tested": 100, "hiv_positive": 40, "ampherid": 5 },
+                { "tumbounid": 41, "name": 'SanPaPao', "name_th": 'สันป่าเปา', lon: 99.085736, lat: 18.862595, "tested": 100, "hiv_positive": 50, "ampherid": 5 },
+                { "tumbounid": 42, "name": 'SanSaiLuang', "name_th": 'สันทรายหลวง', lon: 99.044698, lat: 18.857681, "tested": 100, "hiv_positive": 60, "ampherid": 5 },
+                { "tumbounid": 43, "name": 'SanPhraNet', "name_th": 'สันพระเนตร', lon: 99.041383, lat: 18.807589, "tested": 100, "hiv_positive": 70, "ampherid": 5 },
+                { "tumbounid": 44, "name": 'SanNaMeng', "name_th": 'สันนาเม็ง', lon: 99.061993, lat: 18.842045, "tested": 100, "hiv_positive": 80, "ampherid": 5 },
+                { "tumbounid": 45, "name": 'MueangLen', "name_th": 'เมืองเล็น', lon: 99.075136, lat: 18.885001, "tested": 100, "hiv_positive": 90, "ampherid": 5 },
+                { "tumbounid": 46, "name": 'NongChom', "name_th": 'หนองจ๊อม', lon: 99.021353, lat: 18.853752, "tested": 100, "hiv_positive": 5, "ampherid": 5 },
+                { "tumbounid": 47, "name": 'SanSaiNoi', "name_th": 'สันทรายน้อย', lon: 99.033304, lat: 18.82637, "tested": 100, "hiv_positive": 10, "ampherid": 5 },
+                { "tumbounid": 48, "name": 'SiPhum', "name_th": 'ศรีภูมิ', lon: 98.985760, lat: 18.794660, "tested": 100, "hiv_positive": 20, "ampherid": 6 },
+                { "tumbounid": 49, "name": 'PhraSing', "name_th": 'พระสิงห์', lon: 98.983727, lat: 18.785318, "tested": 100, "hiv_positive": 30, "ampherid": 6 },
+                { "tumbounid": 50, "name": 'Haiya', "name_th": 'หายยา', lon: 98.985057, lat: 18.777169, "tested": 100, "hiv_positive": 40, "ampherid": 6 },
+                { "tumbounid": 51, "name": 'ChangMoi', "name_th": 'ช้างม่อย', lon: 98.997889, lat: 18.796387, "tested": 100, "hiv_positive": 50, "ampherid": 6 },
+                { "tumbounid": 52, "name": 'ChangKhlan', "name_th": 'ช้างคลาน', lon: 98.995228, lat: 18.775828, "tested": 100, "hiv_positive": 60, "ampherid": 6 },
+                { "tumbounid": 53, "name": 'WatKet', "name_th": 'วัดเกต', lon: 99.013389, lat: 18.787393, "tested": 100, "hiv_positive": 70, "ampherid": 6 },
+                { "tumbounid": 53, "name": 'ChangPhueak', "name_th": 'ช้างเผือก', lon: 98.943729, lat: 18.820517, "tested": 100, "hiv_positive": 80, "ampherid": 6 },
+                { "tumbounid": 54, "name": 'Suthep', "name_th": 'สุเทพ', lon: 98.921070, lat: 18.788667, "tested": 100, "hiv_positive": 90, "ampherid": 6 },
+                { "tumbounid": 55, "name": 'MaeHia', "name_th": 'แม่เหียะ', lon: 98.934374, lat: 18.750879, "tested": 100, "hiv_positive": 10, "ampherid": 6 },
+                { "tumbounid": 56, "name": 'PaDaet', "name_th": 'ป่าแดด', lon: 98.982096, lat: 18.743726, "tested": 100, "hiv_positive": 20, "ampherid": 6 },
+                { "tumbounid": 57, "name": 'NongHoi', "name_th": 'หนองหอย', lon: 99.013681, lat: 18.757706, "tested": 100, "hiv_positive": 30, "ampherid": 6 },
+                { "tumbounid": 58, "name": 'ThaSala', "name_th": 'ท่าศาลา', lon: 99.033079, lat: 18.771521, "tested": 100, "hiv_positive": 40, "ampherid": 6 },
+                { "tumbounid": 59, "name": 'NongPaKhrang', "name_th": 'หนองป่าครั่ง', lon: 99.029818, lat: 18.791836, "tested": 100, "hiv_positive": 50, "ampherid": 6 },
+                { "tumbounid": 60, "name": 'FaHam', "name_th": 'ฟ้าฮ่าม', lon: 99.009562, lat: 18.816211, "tested": 100, "hiv_positive": 60, "ampherid": 6 },
+                { "tumbounid": 61, "name": 'PaTan', "name_th": 'ป่าตัน', lon: 98.991880, lat: 18.820761, "tested": 100, "hiv_positive": 70, "ampherid": 6 },
+                { "tumbounid": 62, "name": 'SanPhisuea', "name_th": 'สันผีเสื้อ', lon: 98.994112, lat: 18.854067, "tested": 100, "hiv_positive": 80, "ampherid": 6 },
+                { "tumbounid": 63, "name": 'SamoengTai', "name_th": 'สะเมิงใต้', lon: 98.720226, lat: 18.838877, "tested": 100, "hiv_positive": 90, "ampherid": 7 },
+                { "tumbounid": 64, "name": 'SamoengNuea', "name_th": 'สะเมิงเหนือ', lon: 98.737907, lat: 18.984220, "tested": 100, "hiv_positive": 10, "ampherid": 7 },
+                { "tumbounid": 65, "name": 'MaeSap', "name_th": 'แม่สาบ', lon: 98.639374, lat: 18.946557, "tested": 100, "hiv_positive": 20, "ampherid": 7 },
+                { "tumbounid": 66, "name": 'BoKaeo', "name_th": 'บ่อแก้ว', lon: 98.565903, lat: 18.851386, "tested": 100, "hiv_positive": 30, "ampherid": 7 },
+                { "tumbounid": 67, "name": 'YangMoen', "name_th": 'ยั้งเมิน', lon: 98.532257, lat: 19.001101, "tested": 100, "hiv_positive": 40, "ampherid": 7 },
+                { "tumbounid": 68, "name": 'SanMahaPhon', "name_th": 'สันมหาพน', lon: 98.940639, lat: 19.120193, "tested": 100, "hiv_positive": 50, "ampherid": 8 },
+                { "tumbounid": 69, "name": 'MaeTaeng', "name_th": 'แม่แตง', lon: 98.907509, lat: 19.157168, "tested": 100, "hiv_positive": 60, "ampherid": 8 },
+                { "tumbounid": 70, "name": 'Khilek', "name_th": 'ขี้เหล็ก', lon: 98.906822, lat: 19.076071, "tested": 100, "hiv_positive": 70, "ampherid": 8 },
+                { "tumbounid": 71, "name": 'ChoLae', "name_th": 'ช่อแล', lon: 99.020462, lat: 19.140627, "tested": 100, "hiv_positive": 80, "ampherid": 8 },
+                { "tumbounid": 72, "name": 'MaeHoPhra', "name_th": 'แม่หอพระ', lon: 99.069901, lat: 19.118895, "tested": 100, "hiv_positive": 90, "ampherid": 8 },
+                { "tumbounid": 73, "name": 'SopPoeng', "name_th": 'สบเปิง', lon: 98.807774, lat: 19.105716, "tested": 100, "hiv_positive": 10, "ampherid": 8 },
+                { "tumbounid": 74, "name": 'SanPaYang', "name_th": 'สันป่ายาง', lon: 98.830261, lat: 19.050436, "tested": 100, "hiv_positive": 20, "ampherid": 8 },
+                { "tumbounid": 75, "name": 'BanPao', "name_th": 'บ้านเป้า', lon: 99.041405, lat: 19.221693, "tested": 100, "hiv_positive": 30, "ampherid": 8 },
+                { "tumbounid": 76, "name": 'PaPae', "name_th": 'ป่าแป๋', lon: 98.673706, lat: 19.17014, "tested": 100, "hiv_positive": 40, "ampherid": 8 },
+                { "tumbounid": 77, "name": 'MueangKai', "name_th": 'เมืองก๋าย', lon: 98.769836, lat: 19.196081, "tested": 100, "hiv_positive": 50, "ampherid": 8 },
+                { "tumbounid": 78, "name": 'BanChang', "name_th": 'บ้านช้าง', lon: 98.855667, lat: 19.151979, "tested": 100, "hiv_positive": 60, "ampherid": 8 },
+                { "tumbounid": 79, "name": 'KuetChang', "name_th": 'กื้ดช้าง', lon: 98.759880, lat: 19.270313, "tested": 100, "hiv_positive": 70, "ampherid": 8 },
+                { "tumbounid": 80, "name": 'Inthakhin', "name_th": 'อินทขิล', lon: 98.946991, lat: 19.201917, "tested": 100, "hiv_positive": 80, "ampherid": 8 },
+                { "tumbounid": 81, "name": 'BanKat', "name_th": 'บ้านกาด', lon: 98.767433, lat: 18.623798, "tested": 100, "hiv_positive": 90, "ampherid": 9 },
+                { "tumbounid": 82, "name": 'ThungPi', "name_th": 'ทุ่งปี๊', lon: 98.754730, lat: 18.588657, "tested": 100, "hiv_positive": 10, "ampherid": 9 },
+                { "tumbounid": 83, "name": 'ThungRuangThong', "name_th": 'ทุ่งรวงทอง', lon: 98.839531, lat: 18.566202, "tested": 100, "hiv_positive": 20, "ampherid": 9 },
+                { "tumbounid": 84, "name": 'MaeWin', "name_th": 'แม่วิน', lon: 98.604183, lat: 18.687228, "tested": 100, "hiv_positive": 30, "ampherid": 9 },
+                { "tumbounid": 85, "name": 'DonPao', "name_th": 'ดอนเปา', lon: 98.772583, lat: 18.692107, "tested": 100, "hiv_positive": 40, "ampherid": 9 },
+                { "tumbounid": 86, "name": 'HangDong', "name_th": 'หางดง', lon: 98.914719, lat: 18.692107, "tested": 100, "hiv_positive": 50, "ampherid": 10 },
+                { "tumbounid": 87, "name": 'NongKaeo', "name_th": 'หนองแก๋ว', lon: 98.934288, lat: 18.669828, "tested": 100, "hiv_positive": 60, "ampherid": 10 },
+                { "tumbounid": 88, "name": 'HanKaeo', "name_th": 'หารแก้ว', lon: 98.921242, lat: 18.649010, "tested": 100, "hiv_positive": 70, "ampherid": 10 },
+                { "tumbounid": 89, "name": 'NongTong', "name_th": 'หนองตอง', lon: 98.945274, lat: 18.612573, "tested": 100, "hiv_positive": 80, "ampherid": 10 },
+                { "tumbounid": 90, "name": 'KhunKhong', "name_th": 'ขุนคง', lon: 98.953857, lat: 18.673080, "tested": 100, "hiv_positive": 90, "ampherid": 10 },
+                { "tumbounid": 91, "name": 'SopMaeKha', "name_th": 'สบแม่ข่า', lon: 98.976517, lat: 18.68324, "tested": 100, "hiv_positive": 10, "ampherid": 10 },
+                { "tumbounid": 92, "name": 'BanWaen', "name_th": 'บ้านแหวน', lon: 98.940554, lat: 18.699749, "tested": 100, "hiv_positive": 20, "ampherid": 10 },
+                { "tumbounid": 93, "name": 'SanPhakWan', "name_th": 'สันผักหวาน', lon: 98.959007, lat: 18.716171, "tested": 100, "hiv_positive": 30, "ampherid": 10 },
+                { "tumbounid": 94, "name": 'NongKhwai', "name_th": 'หนองควาย', lon: 98.922787, lat: 18.730803, "tested": 100, "hiv_positive": 40, "ampherid": 10 },
+                { "tumbounid": 95, "name": 'BanPong', "name_th": 'บ้านปง', lon: 98.839188, lat: 18.803131, "tested": 100, "hiv_positive": 50, "ampherid": 10 },
+                { "tumbounid": 96, "name": 'NamPhrae', "name_th": 'น้ำแพร่', lon: 98.862104, lat: 18.721536, "tested": 100, "hiv_positive": 60, "ampherid": 10 },
+                { "tumbounid": 97, "name": 'YangNoeng', "name_th": 'ยางเนิ้ง', lon: 99.034538, lat: 18.710236, "tested": 100, "hiv_positive": 70, "ampherid": 12 },
+                { "tumbounid": 98, "name": 'Saraphi', "name_th": 'สารภี', lon: 99.047241, lat: 18.681049, "tested": 100, "hiv_positive": 80, "ampherid": 11 },
+                { "tumbounid": 99, "name": 'ChomPhu', "name_th": 'ชมภู', lon: 99.064751, lat: 18.700237, "tested": 100, "hiv_positive": 90, "ampherid": 11 },
+                { "tumbounid": 100, "name": 'ChaiSathan', "name_th": 'ไชยสถาน', lon: 99.042435, lat: 18.745108, "tested": 100, "hiv_positive": 10, "ampherid": 11 },
+                { "tumbounid": 101, "name": 'KhuaMung', "name_th": 'ขัวมุง', lon: 98.982353, lat: 18.667714, "tested": 100, "hiv_positive": 20, "ampherid": 11 },
+                { "tumbounid": 102, "name": 'NongFaek', "name_th": 'หนองแฝก', lon: 99.019089, lat: 18.691456, "tested": 100, "hiv_positive": 30, "ampherid": 11 },
+                { "tumbounid": 103, "name": 'NongPhueng', "name_th": 'หนองผึ้ง', lon: 99.021492, lat: 18.736655, "tested": 100, "hiv_positive": 40, "ampherid": 11 },
+                { "tumbounid": 104, "name": 'ThaKwang', "name_th": 'ท่ากว้าง', lon: 98.997116, lat: 18.659257, "tested": 100, "hiv_positive": 50, "ampherid": 11 },
+                { "tumbounid": 105, "name": 'DonKaeo', "name_th": 'ดอนแก้ว', lon: 98.995399, lat: 18.697310, "tested": 100, "hiv_positive": 60, "ampherid": 11 },
+                { "tumbounid": 106, "name": 'ThaWangTan', "name_th": 'ท่าวังตาล', lon: 98.996944, lat: 18.728039, "tested": 100, "hiv_positive": 70, "ampherid": 11 },
+                { "tumbounid": 107, "name": 'SanSai', "name_th": 'สันทราย', lon: 98.968964, lat: 18.638438, "tested": 100, "hiv_positive": 80, "ampherid": 11 },
+                { "tumbounid": 108, "name": 'PaBong', "name_th": 'ป่าบง', lon: 99.055481, lat: 18.738606, "tested": 100, "hiv_positive": 90, "ampherid": 11 },
+                { "tumbounid": 109, "name": 'SanKamphaeng', "name_th": 'สันกำแพง', lon: 99.108524, lat: 18.746246, "tested": 100, "hiv_positive": 10, "ampherid": 12 },
+                { "tumbounid": 110, "name": 'SaiMun', "name_th": 'ทรายมูล', lon: 99.139853, lat: 18.739337, "tested": 100, "hiv_positive": 20, "ampherid": 12 },
+                { "tumbounid": 111, "name": 'RongWuaDaeng', "name_th": 'ร้องวัวแดง', lon: 99.181824, lat: 18.749741, "tested": 100, "hiv_positive": 30, "ampherid": 12 },
+                { "tumbounid": 112, "name": 'BuakKhang', "name_th": 'บวกค้าง', lon: 99.103546, lat: 18.704220, "tested": 100, "hiv_positive": 40, "ampherid": 12 },
+                { "tumbounid": 113, "name": 'ChaeChang', "name_th": 'แช่ช้าง', lon: 99.149380, lat: 18.722918, "tested": 100, "hiv_positive": 50, "ampherid": 12 },
+                { "tumbounid": 114, "name": 'OnTai', "name_th": 'ออนใต้', lon: 99.220190, lat: 18.704220, "tested": 100, "hiv_positive": 60, "ampherid": 12 },
+                { "tumbounid": 115, "name": 'MaePuKha', "name_th": 'แม่ปูคา', lon: 99.124188, lat: 18.780257, "tested": 100, "hiv_positive": 70, "ampherid": 12 },
+                { "tumbounid": 116, "name": 'HuaiSai', "name_th": 'ห้วยทราย', lon: 99.189463, lat: 18.781882, "tested": 100, "hiv_positive": 80, "ampherid": 12 },
+                { "tumbounid": 117, "name": 'TonPao', "name_th": 'ต้นเปา', lon: 99.079535, lat: 18.758986, "tested": 100, "hiv_positive": 90, "ampherid": 12 },
+                { "tumbounid": 118, "name": 'SanKlang', "name_th": 'สันกลาง', lon: 99.054687, lat: 18.776946, "tested": 100, "hiv_positive": 10, "ampherid": 12 },
+                { "tumbounid": 119, "name": 'OnNuea', "name_th": 'ออนเหนือ', lon: 99.311600, lat: 18.803131, "tested": 100, "hiv_positive": 20, "ampherid": 13 },
+                { "tumbounid": 120, "name": 'OnKlang', "name_th": 'ออนกลาง', lon: 99.260616, lat: 18.754536, "tested": 100, "hiv_positive": 30, "ampherid": 13 },
+                { "tumbounid": 121, "name": 'BanSahakon', "name_th": 'บ้านสหกรณ์', lon: 99.240156, lat: 18.824498, "tested": 100, "hiv_positive": 40, "ampherid": 13 },
+                { "tumbounid": 122, "name": 'HuaiKaeo', "name_th": 'ห้วยแก้ว', lon: 99.321181, lat: 18.880707, "tested": 100, "hiv_positive": 50, "ampherid": 13 },
+                { "tumbounid": 123, "name": 'MaeTha', "name_th": 'แม่ทา', lon: 99.287535, lat: 18.600453, "tested": 100, "hiv_positive": 60, "ampherid": 13 },
+                { "tumbounid": 124, "name": 'ThaNuea', "name_th": 'ทาเหนือ', lon: 99.308134, lat: 18.704220, "tested": 100, "hiv_positive": 70, "ampherid": 13 },
+                { "tumbounid": 125, "name": 'BanLuang', "name_th": 'บ้านหลวง', lon: 98.583927, lat: 18.503052, "tested": 100, "hiv_positive": 80, "ampherid": 14 },
+                { "tumbounid": 126, "name": 'BanPae', "name_th": '	บ้านแปะ', lon: 98.564529, lat: 18.256415, "tested": 100, "hiv_positive": 90, "ampherid": 14 },
+                { "tumbounid": 127, "name": 'DoiKaeo', "name_th": 'ดอยแก้ว', lon: 98.564014, lat: 18.386294, "tested": 100, "hiv_positive": 10, "ampherid": 14 },
+                { "tumbounid": 128, "name": 'KhuangPao', "name_th": 'ข่วงเปา', lon: 98.705893, lat: 18.458646, "tested": 100, "hiv_positive": 20, "ampherid": 14 },
+                { "tumbounid": 129, "name": 'MaeSoi', "name_th": 'แม่สอย', lon: 98.673620, lat: 18.264443, "tested": 100, "hiv_positive": 30, "ampherid": 14 },
+                { "tumbounid": 130, "name": 'SopTia', "name_th": 'สบเตี๊ยะ', lon: 98.662634, lat: 18.359780, "tested": 100, "hiv_positive": 40, "ampherid": 14 },
+                { "tumbounid": 131, "name": 'Yuwa', "name_th": 'ยุหว่า', lon: 98.879013, lat: 18.618674, "tested": 100, "hiv_positive": 50, "ampherid": 15 },
+                { "tumbounid": 132, "name": 'SanKlang', "name_th": 'สันกลาง', lon: 98.891029, lat: 18.649905, "tested": 100, "hiv_positive": 60, "ampherid": 15 },
+                { "tumbounid": 133, "name": 'ThaWangPhrao', "name_th": 'ท่าวังพร้าว', lon: 98.860474, lat: 18.527713, "tested": 100, "hiv_positive": 70, "ampherid": 15 },
+                { "tumbounid": 134, "name": 'MakhamLuang', "name_th": 'มะขามหลวง', lon: 98.905621, lat: 18.598663, "tested": 100, "hiv_positive": 80, "ampherid": 15 },
+                { "tumbounid": 135, "name": 'MaeKa', "name_th": 'แม่ก๊า', lon: 98.914070, lat: 18.546691, "tested": 100, "hiv_positive": 90, "ampherid": 15 },
+                { "tumbounid": 136, "name": 'BanMae', "name_th": 'บ้านแม', lon: 98.843517, lat: 18.632762, "tested": 100, "hiv_positive": 10, "ampherid": 15 },
+                { "tumbounid": 137, "name": 'BanKlang', "name_th": 'บ้านกลาง', lon: 98.881797, lat: 18.562640, "tested": 100, "hiv_positive": 20, "ampherid": 15 },
+                { "tumbounid": 138, "name": 'ThungSatok', "name_th": 'ทุ่งสะโตก', lon: 98.849010, lat: 18.584770, "tested": 100, "hiv_positive": 30, "ampherid": 15 },
+                { "tumbounid": 139, "name": 'ThungTom', "name_th": 'ทุ่งต้อม', lon: 98.919563, lat: 18.608198, "tested": 100, "hiv_positive": 40, "ampherid": 15 },
+                { "tumbounid": 140, "name": 'NamBoLuang', "name_th": 'น้ำบ่อหลวง', lon: 98.842658, lat: 18.674562, "tested": 100, "hiv_positive": 50, "ampherid": 15 },
+                { "tumbounid": 141, "name": 'MakhunWan', "name_th": 'มะขุนหวาน', lon: 98.902053, lat: 18.573054, "tested": 100, "hiv_positive": 60, "ampherid": 15 },
+                { "tumbounid": 142, "name": 'HangDong', "name_th": 'หางดง', lon: 98.526764, lat: 18.172521, "tested": 100, "hiv_positive": 70, "ampherid": 16 },
+                { "tumbounid": 143, "name": 'Hot', "name_th": 'ฮอด', lon: 98.583241, lat: 18.104169, "tested": 100, "hiv_positive": 80, "ampherid": 16 },
+                { "tumbounid": 144, "name": 'BanTan', "name_th": 'บ้านตาล', lon: 98.718166, lat: 18.10123, "tested": 100, "hiv_positive": 90, "ampherid": 16 },
+                { "tumbounid": 145, "name": 'BoLuang', "name_th": 'บ่อหลวง', lon: 98.371067, lat: 18.148217, "tested": 100, "hiv_positive": 10, "ampherid": 16 },
+                { "tumbounid": 146, "name": 'BoSali', "name_th": 'บ่อสลี', lon: 98.239725, lat: 18.158677, "tested": 100, "hiv_positive": 20, "ampherid": 16 },
+                { "tumbounid": 147, "name": 'NaKhoRuea', "name_th": 'นาคอเรือ', lon: 98.514318, lat: 18.008447, "tested": 100, "hiv_positive": 30, "ampherid": 16 },
+                { "tumbounid": 148, "name": 'Omkoi', "name_th": 'อมก๋อย', lon: 98.336134, lat: 17.912021, "tested": 100, "hiv_positive": 40, "ampherid": 17 },
+                { "tumbounid": 149, "name": 'YangPiang', "name_th": 'ยางเปียง', lon: 98.402910, lat: 17.671911, "tested": 100, "hiv_positive": 50, "ampherid": 17 },
+                { "tumbounid": 150, "name": 'MaeTuen', "name_th": 'แม่ตื่น', lon: 98.394842, lat: 17.397166, "tested": 100, "hiv_positive": 60, "ampherid": 17 },
+                { "tumbounid": 151, "name": 'MonChong', "name_th": 'ม่อนจอง', lon: 98.503332, lat: 17.445074, "tested": 100, "hiv_positive": 70, "ampherid": 17 },
+                { "tumbounid": 152, "name": 'MaeLong', "name_th": 'แม่หลอง', lon: 98.209791, lat: 17.659889, "tested": 100, "hiv_positive": 80, "ampherid": 17 },
+                { "tumbounid": 153, "name": 'NaKian', "name_th": 'นาเกียน', lon: 98.149023, lat: 17.866525, "tested": 100, "hiv_positive": 90, "ampherid": 17 },
+                { "tumbounid": 154, "name": 'ChiangDao', "name_th": 'เชียงดาว', lon: 98.943901, lat: 19.393096, "tested": 100, "hiv_positive": 10, "ampherid": 18 },
+                { "tumbounid": 155, "name": 'MueangNa', "name_th": 'เมืองนะ', lon: 98.889313, lat: 19.683970, "tested": 100, "hiv_positive": 20, "ampherid": 18 },
+                { "tumbounid": 156, "name": 'MueangNgai', "name_th": 'เมืองงาย', lon: 98.885193, lat: 19.479863, "tested": 100, "hiv_positive": 30, "ampherid": 18 },
+                { "tumbounid": 157, "name": 'MaeNa', "name_th": 'แม่นะ', lon: 98.931198, lat: 19.318595, "tested": 100, "hiv_positive": 40, "ampherid": 18 },
+                { "tumbounid": 158, "name": 'MueangKhong', "name_th": 'เมืองคอง', lon: 98.705292, lat: 19.385162, "tested": 100, "hiv_positive": 50, "ampherid": 18 },
+                { "tumbounid": 159, "name": 'PingKhong', "name_th": 'ปิงโค้ง', lon: 99.061661, lat: 19.496693, "tested": 100, "hiv_positive": 60, "ampherid": 18 },
+                { "tumbounid": 160, "name": 'ThungKhaoPhuang', "name_th": 'ทุ่งข้าวพวง', lon: 98.875923, lat: 19.556555, "tested": 100, "hiv_positive": 70, "ampherid": 18 },
+                { "tumbounid": 161, "name": 'ChangKhoeng', "name_th": 'ช่างเคิ่ง', lon: 98.398361, lat: 18.551881, "tested": 100, "hiv_positive": 80, "ampherid": 19 },
+                { "tumbounid": 162, "name": 'ThaPha', "name_th": 'ท่าผา', lon: 98.409348, lat: 18.477981, "tested": 100, "hiv_positive": 90, "ampherid": 19 },
+                { "tumbounid": 163, "name": 'BanThap', "name_th": 'บ้านทับ', lon: 98.236656, lat: 18.361368, "tested": 100, "hiv_positive": 10, "ampherid": 19 },
+                { "tumbounid": 164, "name": 'MaeSuek', "name_th": 'แม่ศึก', lon: 98.210907, lat: 18.731128, "tested": 100, "hiv_positive": 20, "ampherid": 19 },
+                { "tumbounid": 165, "name": 'MaeNaChon', "name_th": 'แม่นาจร', lon: 98.400421, lat: 18.788993, "tested": 100, "hiv_positive": 30, "ampherid": 19 },
+                { "tumbounid": 166, "name": 'PangHinFon', "name_th": 'ปางหินฝน', lon: 98.196831, lat: 18.506308, "tested": 100, "hiv_positive": 40, "ampherid": 19 },
+                { "tumbounid": 167, "name": 'KongKhaek', "name_th": 'กองแขก', lon: 98.386002, lat: 18.362509, "tested": 100, "hiv_positive": 50, "ampherid": 19 },
+                { "tumbounid": 168, "name": 'Wiang', "name_th": 'เวียง', lon: 99.201736, lat: 19.378847, "tested": 100, "hiv_positive": 60, "ampherid": 20 },
+                { "tumbounid": 169, "name": 'ThungLuang', "name_th": 'ทุ่งหลวง', lon: 99.194870, lat: 19.358118, "tested": 100, "hiv_positive": 70, "ampherid": 20 },
+                { "tumbounid": 170, "name": 'PaTum', "name_th": 'ป่าตุ้ม', lon: 99.271088, lat: 19.377227, "tested": 100, "hiv_positive": 80, "ampherid": 20 },
+                { "tumbounid": 171, "name": 'PaNai', "name_th": 'ป่าไหน่', lon: 99.257698, lat: 19.439076, "tested": 100, "hiv_positive": 90, "ampherid": 20 },
+                { "tumbounid": 172, "name": 'SanSai', "name_th": 'สันทราย', lon: 99.201565, lat: 19.503489, "tested": 100, "hiv_positive": 10, "ampherid": 20 },
+                { "tumbounid": 173, "name": 'BanPong', "name_th": 'บ้านโป่ง', lon: 99.143543, lat: 19.385324, "tested": 100, "hiv_positive": 20, "ampherid": 20 },
+                { "tumbounid": 174, "name": 'NamPhrae', "name_th": 'น้ำแพร่', lon: 99.126720, lat: 19.342569, "tested": 100, "hiv_positive": 30, "ampherid": 20 },
+                { "tumbounid": 175, "name": 'KhueanPhak', "name_th": 'เขื่อนผาก', lon: 99.175816, lat: 19.316975, "tested": 100, "hiv_positive": 40, "ampherid": 20 },
+                { "tumbounid": 176, "name": 'MaeWan', "name_th": 'แม่แวน', lon: 99.273319, lat: 19.296562, "tested": 100, "hiv_positive": 50, "ampherid": 20 },
+                { "tumbounid": 177, "name": 'MaePang', "name_th": 'แม่ปั๋ง', lon: 99.212208, lat: 19.215209, "tested": 100, "hiv_positive": 60, "ampherid": 20 },
+                { "tumbounid": 178, "name": 'LongKhot', "name_th": 'โหล่งขอด', lon: 99.195728, lat: 19.105919, "tested": 100, "hiv_positive": 70, "ampherid": 20 },
+                { "tumbounid": 179, "name": 'PongTam', "name_th": 'ปงตำ', lon: 99.109383, lat: 19.758303, "tested": 100, "hiv_positive": 80, "ampherid": 21 },
+                { "tumbounid": 180, "name": 'SiDongYen', "name_th": 'ศรีดงเย็น', lon: 99.175644, lat: 19.646791, "tested": 100, "hiv_positive": 90, "ampherid": 21 },
+                { "tumbounid": 181, "name": 'MaeThalop', "name_th": 'แม่ทะลบ', lon: 99.249115, lat: 19.729867, "tested": 100, "hiv_positive": 10, "ampherid": 21 },
+                { "tumbounid": 182, "name": 'NongBua', "name_th": 'หนองบัว', lon: 99.085350, lat: 19.727604, "tested": 100, "hiv_positive": 20, "ampherid": 21 },
+                { "tumbounid": 183, "name": 'Wiang', "name_th": 'เวียง', lon: 99.227829, lat: 19.922358, "tested": 100, "hiv_positive": 30, "ampherid": 22 },
+                { "tumbounid": 184, "name": 'MonPin', "name_th": 'ม่อนปิ่น', lon: 99.085693, lat: 119.119, "tested": 100, "hiv_positive": 40, "ampherid": 22 },
+                { "tumbounid": 185, "name": 'MaeNgon', "name_th": 'แม่งอน', lon: 99.077110, lat: 19.827111, "tested": 100, "hiv_positive": 50, "ampherid": 22 },
+                { "tumbounid": 186, "name": 'MaeSun', "name_th": 'แม่สูน', lon: 99.131355, lat: 19.850686, "tested": 100, "hiv_positive": 60, "ampherid": 22 },
+                { "tumbounid": 187, "name": 'SanSai', "name_th": 'สันทราย', lon: 99.179420, lat: 19.885235, "tested": 100, "hiv_positive": 70, "ampherid": 22 },
+                { "tumbounid": 188, "name": 'MaeKha', "name_th": 'แม่คะ', lon: 99.275894, lat: 19.818552, "tested": 100, "hiv_positive": 80, "ampherid": 22 },
+                { "tumbounid": 189, "name": 'MaeKha', "name_th": 'แม่ข่า', lon: 99.224911, lat: 19.774781, "tested": 100, "hiv_positive": 90, "ampherid": 22 },
+                { "tumbounid": 190, "name": 'PongNamRon', "name_th": 'โป่งน้ำร้อน', lon: 99.156675, lat: 19.974801, "tested": 100, "hiv_positive": 10, "ampherid": 22 },
+                { "tumbounid": 191, "name": 'MaeAi', "name_th": 'แม่อาย', lon: 99.253407, lat: 20.070927, "tested": 100, "hiv_positive": 20, "ampherid": 23 },
+                { "tumbounid": 192, "name": 'MaeSao', "name_th": 'แม่สาว', lon: 99.202595, lat: 20.037709, "tested": 100, "hiv_positive": 30, "ampherid": 23 },
+                { "tumbounid": 193, "name": 'SanTonMue', "name_th": 'สันต้นหมื้อ', lon: 99.275723, lat: 19.950921, "tested": 100, "hiv_positive": 40, "ampherid": 23 },
+                { "tumbounid": 194, "name": 'MaeNaWang', "name_th": 'แม่นาวาง', lon: 99.384899, lat: 19.987707, "tested": 100, "hiv_positive": 50, "ampherid": 23 },
+                { "tumbounid": 195, "name": 'ThaTon', "name_th": 'ท่าตอน', lon: 99.440861, lat: 20.083503, "tested": 100, "hiv_positive": 60, "ampherid": 23 },
+                { "tumbounid": 196, "name": 'BanLuang', "name_th": 'บ้านหลวง', lon: 99.341984, lat: 19.874096, "tested": 100, "hiv_positive": 70, "ampherid": 23 },
+                { "tumbounid": 197, "name": 'Malika', "name_th": 'มะลิกา', lon: 99.316235, lat: 20.067380, "tested": 100, "hiv_positive": 80, "ampherid": 23 },
+                { "tumbounid": 198, "name": 'MueangHaeng', "name_th": 'เมืองแหง', lon: 98.637314, lat: 19.553643, "tested": 100, "hiv_positive": 90, "ampherid": 24 },
+                { "tumbounid": 199, "name": 'PiangLuang', "name_th": 'เปียงหลวง', lon: 98.668900, lat: 19.688496, "tested": 100, "hiv_positive": 10, "ampherid": 24 },
+                { "tumbounid": 200, "name": 'SaenHai', "name_th": 'แสนไห', lon: 98.614998, lat: 19.640971, "tested": 100, "hiv_positive": 20, "ampherid": 24 },
+                { "tumbounid": 201, "name": 'BanChan', "name_th": 'บ้านจันทร์', lon: 98.319397, lat: 19.079640, "tested": 100, "hiv_positive": 30, "ampherid": 25 },
+                { "tumbounid": 202, "name": 'MaeDaet', "name_th": 'แม่แดด', lon: 98.368149, lat: 18.943634, "tested": 100, "hiv_positive": 40, "ampherid": 25 },
+                { "tumbounid": 203, "name": 'ChaemLuang', "name_th": 'แจ่มหลวง', lon: 98.237000, lat: 18.977727, "tested": 100, "hiv_positive": 50, "ampherid": 25 },
+            ]
+        }
+    var cfg = {
+        radius: 25,
+        maxOpacity: 1,
+        scaleRadius: false,
+        userLocalExtrema: true
+    };
+    function init(){
+        var map = new longdo.Map({
+            placeholder: document.getElementById("map")
+        });
+        console.log(marketData);
+        // marketData.features.forEach(element =>{
+        //     var utm = "+proj=utm +zone=47";
+        //     var wgs84 = "+proj=longlat +ellps=WGS84+data=WGS84 +no_defs";
+        //     let tempLocation = proj4(utm, wgs84, [
+        //         element.geometry.cordinates[0],
+        //         element.geometry.cordinates[1]
+        //     ]);
+        //     testData.data.push({
+        //         lat: tempLocation[1],
+        //         lon: tempLocation[0],
+        //         value: "1"
+        //     });
+        // });
+
+        heatmapLayer = new HeatmapOverlay(cgf);
+        heatmapLayer.setData(testData);
+        map.Layers.add(heatmmapLayer);
+
+    }
+    
+</script>
+
+</html>

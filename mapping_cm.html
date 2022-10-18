@@ -1,0 +1,908 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Create Map Sample | Longdo Map</title>
+    <style type="text/css">
+        html {
+            height: 100%;
+        }
+
+        body {
+            margin: 0px;
+            height: 100%;
+        }
+
+        #map {
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body onload="init();">
+    <div id="map"></div>
+</body>
+<!-- <script type="text/javascript" src="https://api.longdo.com/map/?key=5fd0f788c78c9ccfc192a5ea93d831ec"></script> -->
+<script>
+    var chiangMaiData = {
+        "ampher": [
+            { "name": 'DoiSaket', "name_th": 'ดอยสะเก็ด', "lon": 99.220963, "lat": 18.944284 },
+            { "name": 'doilo', "name_th": 'ดอยหล่อ', "lon": 98.749580, "lat": 18.536909 },
+            { "name": 'doitao', "name_th": 'ดอยเต่า', "lon": 98.672333, "lat": 17.910469 },
+            { "name": 'MaeRim', "name_th": 'แม่ริม', "lon": 98.877211, "lat": 18.943310 },
+            { "name": 'SanSai', "name_th": 'สันทราย', "lon": 99.030075, "lat": 18.957110 },
+            { "name": 'MueangChiangMai', "name_th": 'เมือง', "lon": 98.955917, "lat": 18.798743 },
+            { "name": 'Samoeng', "name_th": 'สะเมิง', "lon": 98.635941, "lat": 18.919603 },
+            { "name": 'MaeTaeng', "name_th": 'แม่แตง', "lon": 98.850174, "lat": 19.185705 },
+            { "name": 'MaeWang', "name_th": 'แม่วาง', "lon": 98.653793, "lat": 18.679097 },
+            { "name": 'HangDong', "name_th": 'หางดง', "lon": 98.882103, "lat": 18.735029 },
+            { "name": 'saraphi', "name_th": 'สารภี', "lon": 99.019432, "lat": 18.698285 },
+            { "name": 'SanKamphaeng', "name_th": 'สันกำแพง', "lon": 99.160538, "lat": 18.738931 },
+            { "name": 'MaeOn', "name_th": 'แม่ออน', "lon": 99.296494, "lat": 18.746734 },
+            { "name": 'ChomThong', "name_th": 'จอมทอง', "lon": 98.601608, "lat": 18.375705 },
+            { "name": 'SanPaTong', "name_th": 'สันป่าตอง', "lon": 98.876266, "lat": 18.610133 },
+            { "name": 'Hord', "name_th": 'ฮอด', "lon": 98.472519, "lat": 18.117466 },
+            { "name": 'Omkoi', "name_th": 'อมก๋อย', "lon": 98.333817, "lat": 17.684914 },
+            { "name": 'ChiangDao', "name_th": 'เชียงดาว', "lon": 98.902359, "lat": 19.516110 },
+            { "name": 'MaeChaem', "name_th": 'แม่แจ่ม', "lon": 98.310471, "lat": 18.602974 },
+            { "name": 'Phrao', "name_th": 'พร้าว', "lon": 99.217873, "lat": 19.296886 },
+            { "name": 'ChaiPrakan', "name_th": 'ไชยปราการ', "lon": 99.164658, "lat": 19.690759 },
+            { "name": 'Fang', "name_th": 'ฝาง', "lon": 99.161911, "lat": 19.893629 },
+            { "name": 'MaeAi', "name_th": 'แม่อาย', "lon": 99.323959, "lat": 20.009807 },
+            { "name": 'wianghaeng', "name_th": 'เวียงแหง', "lon": 98.641434, "lat": 19.592461 },
+            { "name": 'GalyaniVadhana', "name_th": 'กัลยาณิวัฒนา', "lon": 98.641435, "lat": 19.592465 },
+        ],
+        "tumboun": [
+            { "name": 'ChoengDoi', "name_th": 'เชิงดอย', "lon": 99.170837, "lat": 18.900440 },
+            { "name": 'SanPuLoei', "name_th": 'สันปูเลย', "lon": 99.070158, "lat": 18.808574 },
+            { "name": 'LuangNuea', "name_th": 'ลวงเหนือ', "lon": 99.132814, "lat": 18.978052 },
+            { "name": 'PaPong', "name_th": 'ป่าป้อง', "lon": 99.157104, "lat": 18.850087 },
+            { "name": 'SangaBan', "name_th": 'สง่าบ้าน', "lon": 99.125004, "lat": 18.828722 },
+            { "name": 'PaLan', "name_th": 'ป่าลาน', "lon": 99.105070, "lat": 18.835892 },
+            { "name": 'TalatKhwan', "name_th": 'ตลาดขวัญ', "lon": 99.087324, "lat": 18.842045 },
+            { "name": 'SamranRat', "name_th": 'สำราญราษฎร์', "lon": 99.094706, "lat": 18.806706 },
+            { "name": 'MaeKhue', "name_th": 'แม่คือ', "lon": 99.100499, "lat": 18.786677 },
+            { "name": 'TalatYai', "name_th": 'ตลาดใหญ่', "lon": 99.122772, "lat": 18.810443 },
+            { "name": 'MaeHoiNgoen', "name_th": 'แม่ฮ้อยเงิน', "lon": 99.149809, "lat": 18.806685 },
+            { "name": 'MaePong', "name_th": 'แม่โป่ง', "lon": 99.200792, "lat": 18.846431 },
+            { "name": 'PaMiang', "name_th": 'ป่าเมี่ยง', "lon": 99.290571, "lat": 18.999803 },
+            { "name": 'ThepSadet', "name_th": 'เทพเสด็จ', "lon": 99.321985, "lat": 18.954837 },
+            { "name": 'SongKhwae', "name_th": 'สองแคว', "lon": 98.840947, "lat": 18.503866 },
+            { "name": 'YangKhram', "name_th": 'ยางคราม', "lon": 98.786917, "lat": 18.557252 },
+            { "name": 'SantiSuk', "name_th": 'สันติสุข', "lon": 98.719883, "lat": 18.565632 },
+            { "name": 'DoiLo', "name_th": 'ดอยหล่อ', "lon": 98.767605, "lat": 18.495319 },
+            { "name": 'DoiTao', "name_th": 'ดอยเต่า', "lon": 98.733101, "lat": 17.909816 },
+            { "name": 'ThaDuea', "name_th": 'ท่าเดื่อ', "lon": 98.668041, "lat": 17.973835 },
+            { "name": 'MuetKa', "name_th": 'มืดกา', "lon": 98.586245, "lat": 17.878860 },
+            { "name": 'BanAen', "name_th": 'บ้านแอ่น', "lon": 98.627787, "lat": 18.055784 },
+            { "name": 'BongTan', "name_th": 'บงตัน', "lon": 98.657656, "lat": 18.021017 },
+            { "name": 'PongThung', "name_th": 'โปงทุ่ง', "lon": 98.782024, "lat": 17.873713 },
+            { "name": 'RimTai', "name_th": 'ริมใต้', "lon": 98.948697, "lat": 18.914122 },
+            { "name": 'RimNuea', "name_th": 'ริมเหนือ', "lon": 98.951379, "lat": 18.928219 },
+            { "name": 'SanPong', "name_th": 'สันโป่ง', "lon": 98.952913, "lat": 18.953782 },
+            { "name": 'Khilekmerim', "name_th": 'ขี้เหล็ก', "lon": 98.938751, "lat": 19.011489 },
+            { "name": 'Saluang', "name_th": 'สะลวง', "lon": 98.828888, "lat": 19.011813 },
+            { "name": 'HuaiSai', "name_th": 'ห้วยทราย', "lon": 98.899269, "lat": 18.968961 },
+            { "name": 'MaeRaem', "name_th": 'แม่แรม', "lon": 98.863220, "lat": 18.923825 },
+            { "name": 'PongYaeng', "name_th": 'โป่งแยง', "lon": 98.818932, "lat": 18.889396 },
+            { "name": 'MaeSa', "name_th": 'แม่สา', "lon": 98.944416, "lat": 18.897517 },
+            { "name": 'DonKaeo', "name_th": '	ดอนแก้ว', "lon": 98.930855, "lat": 18.861783 },
+            { "name": 'MueangKaeo', "name_th": 'เหมืองแก้ว', "lon": 98.982267, "lat": 18.901983 },
+            { "name": 'MaeFaekMai', "name_th": 'แม่แฝกใหม่', "lon": 99.013939, "lat": 18.993960 },
+            { "name": 'MaeFaek', "name_th": 'แม่แฝก', "lon": 99.001064, "lat": 19.050760 },
+            { "name": 'PaPhai', "name_th": 'ป่าไผ่', "lon": 99.053164, "lat": 18.918710 },
+            { "name": 'NongHan', "name_th": 'หนองหาร', "lon": 99.012651, "lat": 18.929021 },
+            { "name": 'NongYaeng', "name_th": 'หนองแหย่ง', "lon": 99.100885, "lat": 18.910996 },
+            { "name": 'SanPaPao', "name_th": 'สันป่าเปา', "lon": 99.085736, "lat": 18.862595 },
+            { "name": 'SanSaiLuang', "name_th": 'สันทรายหลวง', "lon": 99.044698, "lat": 18.857681 },
+            { "name": 'SanPhraNet', "name_th": 'สันพระเนตร', "lon": 99.041383, "lat": 18.807589 },
+            { "name": 'SanNaMeng', "name_th": 'สันนาเม็ง', "lon": 99.061993, "lat": 18.842045 },
+            { "name": 'MueangLen', "name_th": 'เมืองเล็น', "lon": 99.075136, "lat": 18.885001 },
+            { "name": 'NongChom', "name_th": 'หนองจ๊อม', "lon": 99.021353, "lat": 18.853752 },
+            { "name": 'SanSaiNoi', "name_th": 'สันทรายน้อย', "lon": 99.033304, "lat": 18.82637 },
+            { "name": 'SiPhum', "name_th": 'ศรีภูมิ', "lon": 98.985760, "lat": 18.794660 },
+            { "name": 'PhraSing', "name_th": 'พระสิงห์', "lon": 98.983727, "lat": 18.785318 },
+            { "name": 'Haiya', "name_th": 'หายยา', "lon": 98.985057, "lat": 18.777169 },
+            { "name": 'ChangMoi', "name_th": 'ช้างม่อย', "lon": 98.997889, "lat": 18.796387 },
+            { "name": 'ChangKhlan', "name_th": 'ช้างคลาน', "lon": 98.995228, "lat": 18.775828 },
+            { "name": 'WatKet', "name_th": 'วัดเกต', "lon": 99.013389, "lat": 18.787393 },
+            { "name": 'ChangPhueak', "name_th": 'ช้างเผือก', "lon": 98.943729, "lat": 18.820517 },
+            { "name": 'Suthep', "name_th": 'สุเทพ', "lon": 98.921070, "lat": 18.788667 },
+            { "name": 'MaeHia', "name_th": 'แม่เหียะ', "lon": 98.934374, "lat": 18.750879 },
+            { "name": 'PaDaet', "name_th": 'ป่าแดด', "lon": 98.982096, "lat": 18.743726 },
+            { "name": 'NongHoi', "name_th": 'หนองหอย', "lon": 99.013681, "lat": 18.757706 },
+            { "name": 'ThaSala', "name_th": 'ท่าศาลา', "lon": 99.033079, "lat": 18.771521 },
+            { "name": 'NongPaKhrang', "name_th": 'หนองป่าครั่ง', "lon": 99.029818, "lat": 18.791836 },
+            { "name": 'FaHam', "name_th": 'ฟ้าฮ่าม', "lon": 99.009562, "lat": 18.816211 },
+            { "name": 'PaTan', "name_th": 'ป่าตัน', "lon": 98.991880, "lat": 18.820761 },
+            { "name": 'SanPhisuea', "name_th": 'สันผีเสื้อ', "lon": 98.994112, "lat": 18.854067 },
+            { "name": 'SamoengTai', "name_th": 'สะเมิงใต้', "lon": 98.720226, "lat": 18.838877 },
+            { "name": 'SamoengNuea', "name_th": 'สะเมิงเหนือ', "lon": 98.737907, "lat": 18.984220 },
+            { "name": 'MaeSap', "name_th": 'แม่สาบ', "lon": 98.639374, "lat": 18.946557 },
+            { "name": 'BoKaeo', "name_th": 'บ่อแก้ว', "lon": 98.565903, "lat": 18.851386 },
+            { "name": 'YangMoen', "name_th": 'ยั้งเมิน', "lon": 98.532257, "lat": 19.001101 },
+            { "name": 'SanMahaPhon', "name_th": 'สันมหาพน', "lon": 98.940639, "lat": 19.120193 },
+            { "name": 'MaeTaeng', "name_th": 'แม่แตง', "lon": 98.907509, "lat": 19.157168 },
+            { "name": 'Khilek', "name_th": 'ขี้เหล็ก', "lon": 98.906822, "lat": 19.076071 },
+            { "name": 'ChoLae', "name_th": 'ช่อแล', "lon": 99.020462, "lat": 19.140627 },
+            { "name": 'MaeHoPhra', "name_th": 'แม่หอพระ', "lon": 99.069901, "lat": 19.118895 },
+            { "name": 'SopPoeng', "name_th": 'สบเปิง', "lon": 98.807774, "lat": 19.105716 },
+            { "name": 'SanPaYang', "name_th": 'สันป่ายาง', "lon": 98.830261, "lat": 19.050436 },
+            { "name": 'BanPao', "name_th": 'บ้านเป้า', "lon": 99.041405, "lat": 19.221693 },
+            { "name": 'PaPae', "name_th": 'ป่าแป๋', "lon": 98.673706, "lat": 19.17014 },
+            { "name": 'MueangKai', "name_th": 'เมืองก๋าย', "lon": 98.769836, "lat": 19.196081 },
+            { "name": 'BanChang', "name_th": 'บ้านช้าง', "lon": 98.855667, "lat": 19.151979 },
+            { "name": 'KuetChang', "name_th": 'กื้ดช้าง', "lon": 98.759880, "lat": 19.270313 },
+            { "name": 'Inthakhin', "name_th": 'อินทขิล', "lon": 98.946991, "lat": 19.201917 },
+            { "name": 'BanKat', "name_th": 'บ้านกาด', "lon": 98.767433, "lat": 18.623798 },
+            { "name": 'ThungPi', "name_th": 'ทุ่งปี๊', "lon": 98.754730, "lat": 18.588657 },
+            { "name": 'ThungRuangThong', "name_th": 'ทุ่งรวงทอง', "lon": 98.839531, "lat": 18.566202 },
+            { "name": 'MaeWin', "name_th": 'แม่วิน', "lon": 98.604183, "lat": 18.687228 },
+            { "name": 'DonPao', "name_th": 'ดอนเปา', "lon": 98.772583, "lat": 18.692107 },
+            { "name": 'HangDong', "name_th": 'หางดง', "lon": 98.914719, "lat": 18.692107 },
+            { "name": 'NongKaeo', "name_th": 'หนองแก๋ว', "lon": 98.934288, "lat": 18.669828 },
+            { "name": 'HanKaeo', "name_th": 'หารแก้ว', "lon": 98.921242, "lat": 18.649010 },
+            { "name": 'NongTong', "name_th": 'หนองตอง', "lon": 98.945274, "lat": 18.612573 },
+            { "name": 'KhunKhong', "name_th": 'ขุนคง', "lon": 98.953857, "lat": 18.673080 },
+            { "name": 'SopMaeKha', "name_th": 'สบแม่ข่า', "lon": 98.976517, "lat": 18.68324 },
+            { "name": 'BanWaen', "name_th": 'บ้านแหวน', "lon": 98.940554, "lat": 18.699749 },
+            { "name": 'SanPhakWan', "name_th": 'สันผักหวาน', "lon": 98.959007, "lat": 18.716171 },
+            { "name": 'NongKhwai', "name_th": 'หนองควาย', "lon": 98.922787, "lat": 18.730803 },
+            { "name": 'BanPong', "name_th": 'บ้านปง', "lon": 98.839188, "lat": 18.803131 },
+            { "name": 'NamPhrae', "name_th": 'น้ำแพร่', "lon": 98.862104, "lat": 18.721536 },
+            { "name": 'YangNoeng', "name_th": 'ยางเนิ้ง', "lon": 99.034538, "lat": 18.710236 },
+            { "name": 'Saraphi', "name_th": 'สารภี', "lon": 99.047241, "lat": 18.681049 },
+            { "name": 'ChomPhu', "name_th": 'ชมภู', "lon": 99.064751, "lat": 18.700237 },
+            { "name": 'ChaiSathan', "name_th": 'ไชยสถาน', "lon": 99.042435, "lat": 18.745108 },
+            { "name": 'KhuaMung', "name_th": 'ขัวมุง', "lon": 98.982353, "lat": 18.667714 },
+            { "name": 'NongFaek', "name_th": 'หนองแฝก', "lon": 99.019089, "lat": 18.691456 },
+            { "name": 'NongPhueng', "name_th": 'หนองผึ้ง', "lon": 99.021492, "lat": 18.736655 },
+            { "name": 'ThaKwang', "name_th": 'ท่ากว้าง', "lon": 98.997116, "lat": 18.659257 },
+            { "name": 'DonKaeo', "name_th": 'ดอนแก้ว', "lon": 98.995399, "lat": 18.697310 },
+            { "name": 'ThaWangTan', "name_th": 'ท่าวังตาล', "lon": 98.996944, "lat": 18.728039 },
+            { "name": 'SanSai', "name_th": 'สันทราย', "lon": 98.968964, "lat": 18.638438 },
+            { "name": 'PaBong', "name_th": 'ป่าบง', "lon": 99.055481, "lat": 18.738606 },
+            { "name": 'SanKamphaeng', "name_th": 'สันกำแพง', "lon": 99.108524, "lat": 18.746246 },
+            { "name": 'SaiMun', "name_th": 'ทรายมูล', "lon": 99.139853, "lat": 18.739337 },
+            { "name": 'RongWuaDaeng', "name_th": 'ร้องวัวแดง', "lon": 99.181824, "lat": 18.749741 },
+            { "name": 'BuakKhang', "name_th": 'บวกค้าง', "lon": 99.103546, "lat": 18.704220 },
+            { "name": 'ChaeChang', "name_th": 'แช่ช้าง', "lon": 99.149380, "lat": 18.722918 },
+            { "name": 'OnTai', "name_th": 'ออนใต้', "lon": 99.220190, "lat": 18.704220 },
+            { "name": 'MaePuKha', "name_th": 'แม่ปูคา', "lon": 99.124188, "lat": 18.780257 },
+            { "name": 'HuaiSai', "name_th": 'ห้วยทราย', "lon": 99.189463, "lat": 18.781882 },
+            { "name": 'TonPao', "name_th": 'ต้นเปา', "lon": 99.079535, "lat": 18.758986 },
+            { "name": 'SanKlang', "name_th": 'สันกลาง', "lon": 99.054687, "lat": 18.776946 },
+            { "name": 'OnNuea', "name_th": 'ออนเหนือ', "lon": 99.311600, "lat": 18.803131 },
+            { "name": 'OnKlang', "name_th": 'ออนกลาง', "lon": 99.260616, "lat": 18.754536 },
+            { "name": 'BanSahakon', "name_th": 'บ้านสหกรณ์', "lon": 99.240156, "lat": 18.824498 },
+            { "name": 'HuaiKaeo', "name_th": 'ห้วยแก้ว', "lon": 99.321181, "lat": 18.880707 },
+            { "name": 'MaeTha', "name_th": 'แม่ทา', "lon": 99.287535, "lat": 18.600453 },
+            { "name": 'ThaNuea', "name_th": 'ทาเหนือ', "lon": 99.308134, "lat": 18.704220 },
+            { "name": 'BanLuang', "name_th": 'บ้านหลวง', "lon": 98.583927, "lat": 18.503052 },
+            { "name": 'BanPae', "name_th": '	บ้านแปะ', "lon": 98.564529, "lat": 18.256415 },
+            { "name": 'DoiKaeo', "name_th": 'ดอยแก้ว', "lon": 98.564014, "lat": 18.386294 },
+            { "name": 'KhuangPao', "name_th": 'ข่วงเปา', "lon": 98.705893, "lat": 18.458646 },
+            { "name": 'MaeSoi', "name_th": 'แม่สอย', "lon": 98.673620, "lat": 18.264443 },
+            { "name": 'SopTia', "name_th": 'สบเตี๊ยะ', "lon": 98.662634, "lat": 18.359780 },
+            { "name": 'Yuwa', "name_th": 'ยุหว่า', "lon": 98.879013, "lat": 18.618674 },
+            { "name": 'SanKlang', "name_th": 'สันกลาง', "lon": 98.891029, "lat": 18.649905 },
+            { "name": 'ThaWangPhrao', "name_th": 'ท่าวังพร้าว', "lon": 98.860474, "lat": 18.527713 },
+            { "name": 'MakhamLuang', "name_th": 'มะขามหลวง', "lon": 98.905621, "lat": 18.598663 },
+            { "name": 'MaeKa', "name_th": 'แม่ก๊า', "lon": 98.914070, "lat": 18.546691 },
+            { "name": 'BanMae', "name_th": 'บ้านแม', "lon": 98.843517, "lat": 18.632762 },
+            { "name": 'BanKlang', "name_th": 'บ้านกลาง', "lon": 98.881797, "lat": 18.562640 },
+            { "name": 'ThungSatok', "name_th": 'ทุ่งสะโตก', "lon": 98.849010, "lat": 18.584770 },
+            { "name": 'ThungTom', "name_th": 'ทุ่งต้อม', "lon": 98.919563, "lat": 18.608198 },
+            { "name": 'NamBoLuang', "name_th": 'น้ำบ่อหลวง', "lon": 98.842658, "lat": 18.674562 },
+            { "name": 'MakhunWan', "name_th": 'มะขุนหวาน', "lon": 98.902053, "lat": 18.573054 },
+            { "name": 'HangDong', "name_th": 'หางดง', "lon": 98.526764, "lat": 18.172521 },
+            { "name": 'Hot', "name_th": 'ฮอด', "lon": 98.583241, "lat": 18.104169 },
+            { "name": 'BanTan', "name_th": 'บ้านตาล', "lon": 98.718166, "lat": 18.10123 },
+            { "name": 'BoLuang', "name_th": 'บ่อหลวง', "lon": 98.371067, "lat": 18.148217 },
+            { "name": 'BoSali', "name_th": 'บ่อสลี', "lon": 98.239725, "lat": 18.158677 },
+            { "name": 'NaKhoRuea', "name_th": 'นาคอเรือ', "lon": 98.514318, "lat": 18.008447 },
+            { "name": 'Omkoi', "name_th": 'อมก๋อย', "lon": 98.336134, "lat": 17.912021 },
+            { "name": 'YangPiang', "name_th": 'ยางเปียง', "lon": 98.402910, "lat": 17.671911 },
+            { "name": 'MaeTuen', "name_th": 'แม่ตื่น', "lon": 98.394842, "lat": 17.397166 },
+            { "name": 'MonChong', "name_th": 'ม่อนจอง', "lon": 98.503332, "lat": 17.445074 },
+            { "name": 'MaeLong', "name_th": 'แม่หลอง', "lon": 98.209791, "lat": 17.659889 },
+            { "name": 'NaKian', "name_th": 'นาเกียน', "lon": 98.149023, "lat": 17.866525 },
+            { "name": 'ChiangDao', "name_th": 'เชียงดาว', "lon": 98.943901, "lat": 19.393096 },
+            { "name": 'MueangNa', "name_th": 'เมืองนะ', "lon": 98.889313, "lat": 19.683970 },
+            { "name": 'MueangNgai', "name_th": 'เมืองงาย', "lon": 98.885193, "lat": 19.479863 },
+            { "name": 'MaeNa', "name_th": 'แม่นะ', "lon": 98.931198, "lat": 19.318595 },
+            { "name": 'MueangKhong', "name_th": 'เมืองคอง', "lon": 98.705292, "lat": 19.385162 },
+            { "name": 'PingKhong', "name_th": 'ปิงโค้ง', "lon": 99.061661, "lat": 19.496693 },
+            { "name": 'ThungKhaoPhuang', "name_th": 'ทุ่งข้าวพวง', "lon": 98.875923, "lat": 19.556555 },
+            { "name": 'ChangKhoeng', "name_th": 'ช่างเคิ่ง', "lon": 98.398361, "lat": 18.551881 },
+            { "name": 'ThaPha', "name_th": 'ท่าผา', "lon": 98.409348, "lat": 18.477981 },
+            { "name": 'BanThap', "name_th": 'บ้านทับ', "lon": 98.236656, "lat": 18.361368 },
+            { "name": 'MaeSuek', "name_th": 'แม่ศึก', "lon": 98.210907, "lat": 18.731128 },
+            { "name": 'MaeNaChon', "name_th": 'แม่นาจร', "lon": 98.400421, "lat": 18.788993 },
+            { "name": 'PangHinFon', "name_th": 'ปางหินฝน', "lon": 98.196831, "lat": 18.506308 },
+            { "name": 'KongKhaek', "name_th": 'กองแขก', "lon": 98.386002, "lat": 18.362509 },
+            { "name": 'Wiang', "name_th": 'เวียง', "lon": 99.201736, "lat": 19.378847 },
+            { "name": 'ThungLuang', "name_th": 'ทุ่งหลวง', "lon": 99.194870, "lat": 19.358118 },
+            { "name": 'PaTum', "name_th": 'ป่าตุ้ม', "lon": 99.271088, "lat": 19.377227 },
+            { "name": 'PaNai', "name_th": 'ป่าไหน่', "lon": 99.257698, "lat": 19.439076 },
+            { "name": 'SanSai', "name_th": 'สันทราย', "lon": 99.201565, "lat": 19.503489 },
+            { "name": 'BanPong', "name_th": 'บ้านโป่ง', "lon": 99.143543, "lat": 19.385324 },
+            { "name": 'NamPhrae', "name_th": 'น้ำแพร่', "lon": 99.126720, "lat": 19.342569 },
+            { "name": 'KhueanPhak', "name_th": 'เขื่อนผาก', "lon": 99.175816, "lat": 19.316975 },
+            { "name": 'MaeWan', "name_th": 'แม่แวน', "lon": 99.273319, "lat": 19.296562 },
+            { "name": 'MaePang', "name_th": 'แม่ปั๋ง', "lon": 99.212208, "lat": 19.215209 },
+            { "name": 'LongKhot', "name_th": 'โหล่งขอด', "lon": 99.195728, "lat": 19.105919 },
+            { "name": 'PongTam', "name_th": 'ปงตำ', "lon": 99.109383, "lat": 19.758303 },
+            { "name": 'SiDongYen', "name_th": 'ศรีดงเย็น', "lon": 99.175644, "lat": 19.646791 },
+            { "name": 'MaeThalop', "name_th": 'แม่ทะลบ', "lon": 99.249115, "lat": 19.729867 },
+            { "name": 'NongBua', "name_th": 'หนองบัว', "lon": 99.085350, "lat": 19.727604 },
+            { "name": 'Wiang', "name_th": 'เวียง', "lon": 99.227829, "lat": 19.922358 },
+            { "name": 'MonPin', "name_th": 'ม่อนปิ่น', "lon": 99.085693, "lat": 119.119 },
+            { "name": 'MaeNgon', "name_th": 'แม่งอน', "lon": 99.077110, "lat": 19.827111 },
+            { "name": 'MaeSun', "name_th": 'แม่สูน', "lon": 99.131355, "lat": 19.850686 },
+            { "name": 'SanSai', "name_th": 'สันทราย', "lon": 99.179420, "lat": 19.885235 },
+            { "name": 'MaeKha', "name_th": 'แม่คะ', "lon": 99.275894, "lat": 19.818552 },
+            { "name": 'MaeKha', "name_th": 'แม่ข่า', "lon": 99.224911, "lat": 19.774781 },
+            { "name": 'PongNamRon', "name_th": 'โป่งน้ำร้อน', "lon": 99.156675, "lat": 19.974801 },
+            { "name": 'MaeAi', "name_th": 'แม่อาย', "lon": 99.253407, "lat": 20.070927 },
+            { "name": 'MaeSao', "name_th": 'แม่สาว', "lon": 99.202595, "lat": 20.037709 },
+            { "name": 'SanTonMue', "name_th": 'สันต้นหมื้อ', "lon": 99.275723, "lat": 19.950921 },
+            { "name": 'MaeNaWang', "name_th": 'แม่นาวาง', "lon": 99.384899, "lat": 19.987707 },
+            { "name": 'ThaTon', "name_th": 'ท่าตอน', "lon": 99.440861, "lat": 20.083503 },
+            { "name": 'BanLuang', "name_th": 'บ้านหลวง', "lon": 99.341984, "lat": 19.874096 },
+            { "name": 'Malika', "name_th": 'มะลิกา', "lon": 99.316235, "lat": 20.067380 },
+            { "name": 'MueangHaeng', "name_th": 'เมืองแหง', "lon": 98.637314, "lat": 19.553643 },
+            { "name": 'PiangLuang', "name_th": 'เปียงหลวง', "lon": 98.668900, "lat": 19.688496 },
+            { "name": 'SaenHai', "name_th": 'แสนไห', "lon": 98.614998, "lat": 19.640971 },
+            { "name": 'BanChan', "name_th": 'บ้านจันทร์', "lon": 0, "lat": 0 },
+            { "name": 'MaeDaet', "name_th": 'แม่แดด', "lon": 0, "lat": 0 },
+            { "name": 'ChaemLuang', "name_th": 'แจ่มหลวง', "lon": 0, "lat": 0 },
+
+        ]
+
+    }
+    const hiv_data = {
+        "hiv_positive": [10],
+        "hiv_retain": [50]
+    }
+
+    /*-----District in Chiang Mai Province-------------*/
+    var DoiSaket = new longdo.Marker({ lon: 99.220963, lat: 18.944284, value: hiv_data.hiv_positive });
+    var doilo = new longdo.Marker({ lon: 98.749580, lat: 18.536909, value: hiv_data.hiv_positive });
+    var doitao = new longdo.Marker({ lon: 98.672333, lat: 17.910469, value: hiv_data.hiv_positive });
+    var MaeRim = new longdo.Marker({ lon: 98.877211, lat: 18.943310, value: hiv_data.hiv_positive });
+    var SanSai = new longdo.Marker({ lon: 99.030075, lat: 18.957110, value: hiv_data.hiv_positive });
+    var MueangChiangMai = new longdo.Marker({ lon: 98.955917, lat: 18.798743, value: hiv_data.hiv_positive });
+    var Samoeng = new longdo.Marker({ lon: 98.635941, lat: 18.919603, value: hiv_data.hiv_positive });
+    var MaeTaeng = new longdo.Marker({ lon: 98.850174, lat: 19.185705, value: hiv_data.hiv_positive });
+    var MaeWang = new longdo.Marker({ lon: 98.663063, lat: 18.678122, value: hiv_data.hiv_positive });
+    var HangDong = new longdo.Marker({ lon: 98.882103, lat: 18.735029, value: hiv_data.hiv_positive });
+    var saraphi = new longdo.Marker({ lon: 99.019432, lat: 18.698285, value: hiv_data.hiv_positive });
+    var SanKamphaeng = new longdo.Marker({ lon: 99.160538, lat: 18.738931, value: hiv_data.hiv_positive });
+    var MaeOn = new longdo.Marker({ lon: 99.296494, lat: 18.746734, value: hiv_data.hiv_positive });
+    var ChomThong = new longdo.Marker({ lon: 98.601608, lat: 18.375705, value: hiv_data.hiv_positive });
+    var SanPaTong = new longdo.Marker({ lon: 98.876266, lat: 18.610133, value: hiv_data.hiv_positive });
+    var Hord = new longdo.Marker({ lon: 98.472519, lat: 18.117466, value: hiv_data.hiv_positive });
+    var Omkoi = new longdo.Marker({ lon: 98.333817, lat: 17.684914, value: hiv_data.hiv_positive });
+    var ChiangDao = new longdo.Marker({ lon: 98.902359, lat: 19.516110, value: hiv_data.hiv_positive });
+    var MaeChaem = new longdo.Marker({ lon: 98.310471, lat: 18.602974, value: hiv_data.hiv_positive });
+    var Phrao = new longdo.Marker({ lon: 99.217873, lat: 19.296886, value: hiv_data.hiv_positive });
+    var ChaiPrakan = new longdo.Marker({ lon: 99.164658, lat: 19.690759, value: hiv_data.hiv_positive });
+    var Fang = new longdo.Marker({ lon: 99.161911, lat: 19.893629, value: hiv_data.hiv_positive });
+    var MaeAi = new longdo.Marker({ lon: 99.323959, lat: 20.009807, value: hiv_data.hiv_positive });
+    var wianghaeng = new longdo.Marker({ lon: 98.641434, lat: 19.592461, value: hiv_data.hiv_positive });
+    var GalyaniVadhana = new longdo.Marker({ lon: 98.641434, lat: 19.592461, value: hiv_data.hiv_positive });
+
+
+    // /*-----Subdistrict in Chiang Mai -------------*/
+
+    // /*-----Subdistrict in District doisaket-------*/
+    var ChoengDoi = new longdo.Marker({ lon: 99.170837, lat: 18.900440, value: hiv_data.hiv_positive });
+    var SanPuLoei = new longdo.Marker({ lon: 99.070158, lat: 18.808574, value: hiv_data.hiv_positive });
+    var LuangNuea = new longdo.Marker({ lon: 99.132814, lat: 18.978052, value: hiv_data.hiv_positive });
+    var PaPong = new longdo.Marker({ lon: 99.157104, lat: 18.850087, value: hiv_data.hiv_positive });
+    var SangaBan = new longdo.Marker({ lon: 99.125004, lat: 18.828722, value: hiv_data.hiv_positive });
+    var PaLan = new longdo.Marker({ lon: 99.105070, lat: 18.835892, value: hiv_data.hiv_positive });
+    var TalatKhwan = new longdo.Marker({ lon: 99.087324, lat: 18.842045, value: hiv_data.hiv_positive });
+    var SamranRat = new longdo.Marker({ lon: 99.094706, lat: 18.806706, value: hiv_data.hiv_positive });
+    var MaeKhue = new longdo.Marker({ lon: 99.100499, lat: 18.786677, value: hiv_data.hiv_positive });
+    var TalatYai = new longdo.Marker({ lon: 99.122772, lat: 18.810443, value: hiv_data.hiv_positive });
+    var MaeHoiNgoen = new longdo.Marker({ lon: 99.149809, lat: 18.806685, value: hiv_data.hiv_positive });
+    var MaePong = new longdo.Marker({ lon: 99.200792, lat: 18.846431, value: hiv_data.hiv_positive });
+    var PaMiang = new longdo.Marker({ lon: 99.290571, lat: 18.999803, value: hiv_data.hiv_positive });
+    var ThepSadet = new longdo.Marker({ lon: 99.321985, lat: 18.954837, value: hiv_data.hiv_positive });
+    // /*--------------------------------------------------------------*/
+
+    // /*-----Subdistrict in District doilo-------*/
+    var SongKhwae = new longdo.Marker({ lon: 98.840947, lat: 18.503866, value: hiv_data.hiv_positive });
+    var YangKhram = new longdo.Marker({ lon: 98.786917, lat: 18.557252, value: hiv_data.hiv_positive });
+    var SantiSuk = new longdo.Marker({ lon: 98.719883, lat: 18.565632, value: hiv_data.hiv_positive });
+    var DoiLo = new longdo.Marker({ lon: 98.767605, lat: 18.495319, value: hiv_data.hiv_positive });
+    // /*--------------------------------------------------------------*/
+
+    // /*-----Subdistrict in District doitao-------*/
+    var DoiTao = new longdo.Marker({ lon: 98.733101, lat: 17.909816, value: hiv_data.hiv_positive });
+    var ThaDuea = new longdo.Marker({ lon: 98.668041, lat: 17.973835, value: hiv_data.hiv_positive });
+    var MuetKa = new longdo.Marker({ lon: 98.586245, lat: 17.878860, value: hiv_data.hiv_positive });
+    var BanAen = new longdo.Marker({ lon: 98.627787, lat: 18.055784, value: hiv_data.hiv_positive });
+    var BongTan = new longdo.Marker({ lon: 98.657656, lat: 18.021017, value: hiv_data.hiv_positive });
+    var PongThung = new longdo.Marker({ lon: 98.782024, lat: 17.873713, value: hiv_data.hiv_positive });
+    // /*--------------------------------------------------------------*/
+
+    // /*-----Subdistrict in District meirim-------*/
+    var RimTai = new longdo.Marker({ lon: 98.948697, lat: 18.914122, value: hiv_data.hiv_positive });
+    var RimNuea = new longdo.Marker({ lon: 98.951379, lat: 18.928219, value: hiv_data.hiv_positive });
+    var SanPong = new longdo.Marker({ lon: 98.952913, lat: 18.953782, value: hiv_data.hiv_positive });
+    var Khilekmerim = new longdo.Marker({ lon: 98.938751, lat: 19.011489, value: hiv_data.hiv_positive });
+    var Saluang = new longdo.Marker({ lon: 98.828888, lat: 19.011813, value: hiv_data.hiv_positive });
+    var HuaiSai = new longdo.Marker({ lon: 98.899269, lat: 18.968961, value: hiv_data.hiv_positive });
+    var MaeRaem = new longdo.Marker({ lon: 98.863220, lat: 18.923825, value: hiv_data.hiv_positive });
+    var PongYaeng = new longdo.Marker({ lon: 98.818932, lat: 18.889396, value: hiv_data.hiv_positive });
+    var MaeSa = new longdo.Marker({ lon: 98.944416, lat: 18.897517, value: hiv_data.hiv_positive });
+    var DonKaeo = new longdo.Marker({ lon: 98.930855, lat: 18.861783, value: hiv_data.hiv_positive });
+    var MueangKaeo = new longdo.Marker({ lon: 98.982267, lat: 18.901983, value: hiv_data.hiv_positive });
+    // /*--------------------------------------------------------------*/
+
+    // /*-----Subdistrict in District sunsai-------*/
+    var MaeFaekMai = new longdo.Marker({ lon: 99.013939, lat: 18.993960, value: hiv_data.hiv_positive });
+    var MaeFaek = new longdo.Marker({ lon: 99.001064, lat: 19.050760, value: hiv_data.hiv_positive });
+    var PaPhai = new longdo.Marker({ lon: 99.053164, lat: 18.918710, value: hiv_data.hiv_positive });
+    var NongHan = new longdo.Marker({ lon: 99.012651, lat: 18.929021, value: hiv_data.hiv_positive });
+    var NongYaeng = new longdo.Marker({ lon: 99.100885, lat: 18.910996, value: hiv_data.hiv_positive });
+    var SanPaPao = new longdo.Marker({ lon: 99.085736, lat: 18.862595, value: hiv_data.hiv_positive });
+    var SanSaiLuang = new longdo.Marker({ lon: 99.044698, lat: 18.857681, value: hiv_data.hiv_positive });
+    var SanPhraNet = new longdo.Marker({ lon: 99.041383, lat: 18.807589, value: hiv_data.hiv_positive });
+    var SanNaMeng = new longdo.Marker({ lon: 99.061993, lat: 18.842045, value: hiv_data.hiv_positive });
+    var MueangLen = new longdo.Marker({ lon: 99.075136, lat: 18.885001, value: hiv_data.hiv_positive });
+    var NongChom = new longdo.Marker({ lon: 99.021353, lat: 18.853752, value: hiv_data.hiv_positive });
+    var SanSaiNoi = new longdo.Marker({ lon: 99.033304, lat: 18.82637, value: hiv_data.hiv_positive });
+    // /*--------------------------------------------------------------*/
+
+    // /*-----Subdistrict in District mueang-------*/
+    var SiPhum = new longdo.Marker({ lon: 98.985760, lat: 18.794660, value: hiv_data.hiv_positive });
+    var PhraSing = new longdo.Marker({ lon: 98.983727, lat: 18.785318, value: hiv_data.hiv_positive });
+    var Haiya = new longdo.Marker({ lon: 98.985057, lat: 18.777169, value: hiv_data.hiv_positive });
+    var ChangMoi = new longdo.Marker({ lon: 98.997889, lat: 18.796387, value: hiv_data.hiv_positive });
+    var ChangKhlan = new longdo.Marker({ lon: 98.995228, lat: 18.775828, value: hiv_data.hiv_positive });
+    var WatKet = new longdo.Marker({ lon: 99.013389, lat: 18.787393, value: hiv_data.hiv_positive });
+    var ChangPhueak = new longdo.Marker({ lon: 98.943729, lat: 18.820517, value: hiv_data.hiv_positive });
+    var Suthep = new longdo.Marker({ lon: 98.921070, lat: 18.788667, value: hiv_data.hiv_positive });
+    var MaeHia = new longdo.Marker({ lon: 98.934374, lat: 18.750879, value: hiv_data.hiv_positive });
+    var PaDaet = new longdo.Marker({ lon: 98.982096, lat: 18.743726, value: hiv_data.hiv_positive });
+    var NongHoi = new longdo.Marker({ lon: 99.013681, lat: 18.757706, value: hiv_data.hiv_positive });
+    var ThaSala = new longdo.Marker({ lon: 99.033079, lat: 18.771521, value: hiv_data.hiv_positive });
+    var NongPaKhrang = new longdo.Marker({ lon: 99.029818, lat: 18.791836, value: hiv_data.hiv_positive });
+    var FaHam = new longdo.Marker({ lon: 99.009562, lat: 18.816211, value: hiv_data.hiv_positive });
+    var PaTan = new longdo.Marker({ lon: 98.991880, lat: 18.820761, value: hiv_data.hiv_positive });
+    var SanPhisuea = new longdo.Marker({ lon: 98.994112, lat: 18.854067, value: hiv_data.hiv_positive });
+    // /*--------------------------------------------------------------*/
+
+    // /*-----Subdistrict in District samaung-------*/
+    var SamoengTai = new longdo.Marker({ lon: 98.720226, lat: 18.838877, value: hiv_data.hiv_positive });
+    var SamoengNuea = new longdo.Marker({ lon: 98.737907, lat: 18.984220, value: hiv_data.hiv_positive });
+    var MaeSap = new longdo.Marker({ lon: 98.639374, lat: 18.946557, value: hiv_data.hiv_positive });
+    var BoKaeo = new longdo.Marker({ lon: 98.565903, lat: 18.851386, value: hiv_data.hiv_positive });
+    var YangMoen = new longdo.Marker({ lon: 98.532257, lat: 19.001101, value: hiv_data.hiv_positive });
+    // /*--------------------------------------------------------------*/
+
+    // /*-----Subdistrict in District meiteng-------*/
+    var SanMahaPhon = new longdo.Marker({ lon: 98.940639, lat: 19.120193, value: hiv_data.hiv_positive });
+    var MaeTaeng = new longdo.Marker({ lon: 98.907509, lat: 19.157168, value: hiv_data.hiv_positive });
+    var Khilek = new longdo.Marker({ lon: 98.906822, lat: 19.076071, value: hiv_data.hiv_positive });
+    var ChoLae = new longdo.Marker({ lon: 99.020462, lat: 19.140627, value: hiv_data.hiv_positive });
+    var MaeHoPhra = new longdo.Marker({ lon: 99.069901, lat: 19.118895, value: hiv_data.hiv_positive });
+    var SopPoeng = new longdo.Marker({ lon: 98.807774, lat: 19.105716, value: hiv_data.hiv_positive });
+    var SanPaYang = new longdo.Marker({ lon: 98.830261, lat: 19.050436, value: hiv_data.hiv_positive });
+    var BanPao = new longdo.Marker({ lon: 99.041405, lat: 19.221693, value: hiv_data.hiv_positive });
+    var PaPae = new longdo.Marker({ lon: 98.673706, lat: 19.17014, value: hiv_data.hiv_positive });
+    var MueangKai = new longdo.Marker({ lon: 98.769836, lat: 19.196081, value: hiv_data.hiv_positive });
+    var BanChang = new longdo.Marker({ lon: 98.855667, lat: 19.151979, value: hiv_data.hiv_positive });
+    var KuetChang = new longdo.Marker({ lon: 98.759880, lat: 19.270313, value: hiv_data.hiv_positive });
+    var Inthakhin = new longdo.Marker({ lon: 98.946991, lat: 19.201917, value: hiv_data.hiv_positive });
+    // /*--------------------------------------------------------------*/
+
+    // /*-----Subdistrict in District meiwang-------*/
+    var BanKat = new longdo.Marker({ lon: 98.767433, lat: 18.623798, value: hiv_data.hiv_positive });
+    var ThungPi = new longdo.Marker({ lon: 98.754730, lat: 18.588657, value: hiv_data.hiv_positive });
+    var ThungRuangThong = new longdo.Marker({ lon: 98.839531, lat: 18.566202, value: hiv_data.hiv_positive });
+    var MaeWin = new longdo.Marker({ lon: 98.604183, lat: 18.687228, value: hiv_data.hiv_positive });
+    var DonPao = new longdo.Marker({ lon: 98.772583, lat: 18.692107, value: hiv_data.hiv_positive });
+    // /*--------------------------------------------------------------*/
+
+    // /*-----Subdistrict in District hangdong-------*/
+    var HangDong = new longdo.Marker({ lon: 98.914719, lat: 18.692107, value: hiv_data.hiv_positive });
+    var NongKaeo = new longdo.Marker({ lon: 98.934288, lat: 18.669828, value: hiv_data.hiv_positive });
+    var HanKaeo = new longdo.Marker({ lon: 98.921242, lat: 18.649010, value: hiv_data.hiv_positive });
+    var NongTong = new longdo.Marker({ lon: 98.945274, lat: 18.612573, value: hiv_data.hiv_positive });
+    var KhunKhong = new longdo.Marker({ lon: 98.953857, lat: 18.673080, value: hiv_data.hiv_positive });
+    var SopMaeKha = new longdo.Marker({ lon: 98.976517, lat: 18.68324, value: hiv_data.hiv_positive });
+    var BanWaen = new longdo.Marker({ lon: 98.940554, lat: 18.699749, value: hiv_data.hiv_positive });
+    var SanPhakWan = new longdo.Marker({ lon: 98.959007, lat: 18.716171, value: hiv_data.hiv_positive });
+    var NongKhwai = new longdo.Marker({ lon: 98.922787, lat: 18.730803, value: hiv_data.hiv_positive });
+    var BanPong = new longdo.Marker({ lon: 98.839188, lat: 18.803131, value: hiv_data.hiv_positive });
+    var NamPhrae = new longdo.Marker({ lon: 98.862104, lat: 18.721536, value: hiv_data.hiv_positive });
+    // /*--------------------------------------------------------------*/
+
+    // /*-----Subdistrict in District sarape-------*/
+    var YangNoeng = new longdo.Marker({ lon: 99.034538, lat: 18.710236, value: hiv_data.hiv_positive });
+    var Saraphi = new longdo.Marker({ lon: 99.047241, lat: 18.681049, value: hiv_data.hiv_positive });
+    var ChomPhu = new longdo.Marker({ lon: 99.064751, lat: 18.700237, value: hiv_data.hiv_positive });
+    var ChaiSathan = new longdo.Marker({ lon: 99.042435, lat: 18.745108, value: hiv_data.hiv_positive });
+    var KhuaMung = new longdo.Marker({ lon: 98.982353, lat: 18.667714, value: hiv_data.hiv_positive });
+    var NongFaek = new longdo.Marker({ lon: 99.019089, lat: 18.691456, value: hiv_data.hiv_positive });
+    var NongPhueng = new longdo.Marker({ lon: 99.021492, lat: 18.736655, value: hiv_data.hiv_positive });
+    var ThaKwang = new longdo.Marker({ lon: 98.997116, lat: 18.659257, value: hiv_data.hiv_positive });
+    var DonKaeo = new longdo.Marker({ lon: 98.995399, lat: 18.697310, value: hiv_data.hiv_positive });
+    var ThaWangTan = new longdo.Marker({ lon: 98.996944, lat: 18.728039, value: hiv_data.hiv_positive });
+    var SanSai = new longdo.Marker({ lon: 98.968964, lat: 18.638438, value: hiv_data.hiv_positive });
+    var PaBong = new longdo.Marker({ lon: 99.055481, lat: 18.738606, value: hiv_data.hiv_positive });
+    // /*--------------------------------------------------------------*/
+
+    // /*-----Subdistrict in District sankumpeng-------*/
+    var SanKamphaeng = new longdo.Marker({ lon: 99.108524, lat: 18.746246, value: hiv_data.hiv_positive });
+    var SaiMun = new longdo.Marker({ lon: 99.139853, lat: 18.739337, value: hiv_data.hiv_positive });
+    var RongWuaDaeng = new longdo.Marker({ lon: 99.181824, lat: 18.749741, value: hiv_data.hiv_positive });
+    var BuakKhang = new longdo.Marker({ lon: 99.103546, lat: 18.704220, value: hiv_data.hiv_positive });
+    var ChaeChang = new longdo.Marker({ lon: 99.149380, lat: 18.722918, value: hiv_data.hiv_positive });
+    var OnTai = new longdo.Marker({ lon: 99.220190, lat: 18.704220, value: hiv_data.hiv_positive });
+    var MaePuKha = new longdo.Marker({ lon: 99.124188, lat: 18.780257, value: hiv_data.hiv_positive });
+    var HuaiSai = new longdo.Marker({ lon: 99.189463, lat: 18.781882, value: hiv_data.hiv_positive });
+    var TonPao = new longdo.Marker({ lon: 99.079535, lat: 18.758986, value: hiv_data.hiv_positive });
+    var SanKlang = new longdo.Marker({ lon: 99.054687, lat: 18.776946, value: hiv_data.hiv_positive });
+    // /*--------------------------------------------------------------*/
+
+    // /*-----Subdistrict in District meiaon-------*/
+    var OnNuea = new longdo.Marker({ lon: 99.311600, lat: 18.803131, value: hiv_data.hiv_positive });
+    var OnKlang = new longdo.Marker({ lon: 99.260616, lat: 18.754536, value: hiv_data.hiv_positive });
+    var BanSahakon = new longdo.Marker({ lon: 99.240156, lat: 18.824498, value: hiv_data.hiv_positive });
+    var HuaiKaeo = new longdo.Marker({ lon: 99.321181, lat: 18.880707, value: hiv_data.hiv_positive });
+    var MaeTha = new longdo.Marker({ lon: 99.287535, lat: 18.600453, value: hiv_data.hiv_positive });
+    var ThaNuea = new longdo.Marker({ lon: 99.308134, lat: 18.704220, value: hiv_data.hiv_positive });
+    // /*--------------------------------------------------------------*/
+
+    // /*-----Subdistrict in District jomtong-------*/
+    var BanLuang = new longdo.Marker({ lon: 98.583927, lat: 18.503052, value: hiv_data.hiv_positive });
+    var BanPae = new longdo.Marker({ lon: 98.564529, lat: 18.256415, value: hiv_data.hiv_positive });
+    var DoiKaeo = new longdo.Marker({ lon: 98.564014, lat: 18.386294, value: hiv_data.hiv_positive });
+    var KhuangPao = new longdo.Marker({ lon: 98.705893, lat: 18.458646, value: hiv_data.hiv_positive });
+    var MaeSoi = new longdo.Marker({ lon: 98.673620, lat: 18.264443, value: hiv_data.hiv_positive });
+    var SopTia = new longdo.Marker({ lon: 98.662634, lat: 18.359780, value: hiv_data.hiv_positive });
+    // /*--------------------------------------------------------------*/
+
+    // /*-----Subdistrict in District sanpatong-------*/
+    var Yuwa = new longdo.Marker({ lon: 98.879013, lat: 18.618674, value: hiv_data.hiv_positive });
+    var SanKlang = new longdo.Marker({ lon: 98.891029, lat: 18.649905, value: hiv_data.hiv_positive });
+    var ThaWangPhrao = new longdo.Marker({ lon: 98.860474, lat: 18.527713, value: hiv_data.hiv_positive });
+    var MakhamLuang = new longdo.Marker({ lon: 98.905621, lat: 18.598663, value: hiv_data.hiv_positive });
+    var MaeKa = new longdo.Marker({ lon: 98.914070, lat: 18.546691, value: hiv_data.hiv_positive });
+    var BanMae = new longdo.Marker({ lon: 98.843517, lat: 18.632762, value: hiv_data.hiv_positive });
+    var BanKlang = new longdo.Marker({ lon: 98.881797, lat: 18.562640, value: hiv_data.hiv_positive });
+    var ThungSatok = new longdo.Marker({ lon: 98.849010, lat: 18.584770, value: hiv_data.hiv_positive });
+    var ThungTom = new longdo.Marker({ lon: 98.919563, lat: 18.608198, value: hiv_data.hiv_positive });
+    var NamBoLuang = new longdo.Marker({ lon: 98.842658, lat: 18.674562, value: hiv_data.hiv_positive });
+    var MakhunWan = new longdo.Marker({ lon: 98.902053, lat: 18.573054, value: hiv_data.hiv_positive });
+    // /*--------------------------------------------------------------*/
+
+    // /*-----Subdistrict in District hord-------*/
+    var HangDong = new longdo.Marker({ lon: 98.526764, lat: 18.172521, value: hiv_data.hiv_positive });
+    var Hot = new longdo.Marker({ lon: 98.583241, lat: 18.104169, value: hiv_data.hiv_positive });
+    var BanTan = new longdo.Marker({ lon: 98.718166, lat: 18.10123, value: hiv_data.hiv_positive });
+    var BoLuang = new longdo.Marker({ lon: 98.371067, lat: 18.148217, value: hiv_data.hiv_positive });
+    var BoSali = new longdo.Marker({ lon: 98.239725, lat: 18.158677, value: hiv_data.hiv_positive });
+    var NaKhoRuea = new longdo.Marker({ lon: 98.514318, lat: 18.008447, value: hiv_data.hiv_positive });
+    // /*--------------------------------------------------------------*/
+
+    // /*-----Subdistrict in District aomgoy-------*/
+    var Omkoi = new longdo.Marker({ lon: 98.336134, lat: 17.912021, value: hiv_data.hiv_positive });
+    var YangPiang = new longdo.Marker({ lon: 98.402910, lat: 17.671911, value: hiv_data.hiv_positive });
+    var MaeTuen = new longdo.Marker({ lon: 98.394842, lat: 17.397166, value: hiv_data.hiv_positive });
+    var MonChong = new longdo.Marker({ lon: 98.503332, lat: 17.445074, value: hiv_data.hiv_positive });
+    var MaeLong = new longdo.Marker({ lon: 98.209791, lat: 17.659889, value: hiv_data.hiv_positive });
+    var NaKian = new longdo.Marker({ lon: 98.149023, lat: 17.866525, value: hiv_data.hiv_positive });
+    // /*--------------------------------------------------------------*/
+
+    // /*-----Subdistrict in District chiangdaw-------*/
+    var ChiangDao = new longdo.Marker({ lon: 98.943901, lat: 19.393096, value: hiv_data.hiv_positive });
+    var MueangNa = new longdo.Marker({ lon: 98.889313, lat: 19.683970, value: hiv_data.hiv_positive });
+    var MueangNgai = new longdo.Marker({ lon: 98.885193, lat: 19.479863, value: hiv_data.hiv_positive });
+    var MaeNa = new longdo.Marker({ lon: 98.931198, lat: 19.318595, value: hiv_data.hiv_positive });
+    var MueangKhong = new longdo.Marker({ lon: 98.705292, lat: 19.385162, value: hiv_data.hiv_positive });
+    var PingKhong = new longdo.Marker({ lon: 99.061661, lat: 19.496693, value: hiv_data.hiv_positive });
+    var ThungKhaoPhuang = new longdo.Marker({ lon: 98.875923, lat: 19.556555, value: hiv_data.hiv_positive });
+    // /*--------------------------------------------------------------*/
+
+    // /*-----Subdistrict in District meajame-------*/
+    var ChangKhoeng = new longdo.Marker({ lon: 98.398361, lat: 18.551881, value: hiv_data.hiv_positive });
+    var ThaPha = new longdo.Marker({ lon: 98.409348, lat: 18.477981, value: hiv_data.hiv_positive });
+    var BanThap = new longdo.Marker({ lon: 98.236656, lat: 18.361368, value: hiv_data.hiv_positive });
+    var MaeSuek = new longdo.Marker({ lon: 98.210907, lat: 18.731128, value: hiv_data.hiv_positive });
+    var MaeNaChon = new longdo.Marker({ lon: 98.400421, lat: 18.788993, value: hiv_data.hiv_positive });
+    var PangHinFon = new longdo.Marker({ lon: 98.196831, lat: 18.506308, value: hiv_data.hiv_positive });
+    var KongKhaek = new longdo.Marker({ lon: 98.386002, lat: 18.362509, value: hiv_data.hiv_positive });
+    // /*--------------------------------------------------------------*/
+
+    // /*-----Subdistrict in District praw-------*/
+    var Wiang = new longdo.Marker({ lon: 99.201736, lat: 19.378847, value: hiv_data.hiv_positive });
+    var ThungLuang = new longdo.Marker({ lon: 99.194870, lat: 19.358118, value: hiv_data.hiv_positive });
+    var PaTum = new longdo.Marker({ lon: 99.271088, lat: 19.377227, value: hiv_data.hiv_positive });
+    var PaNai = new longdo.Marker({ lon: 99.257698, lat: 19.439076, value: hiv_data.hiv_positive });
+    var SanSai = new longdo.Marker({ lon: 99.201565, lat: 19.503489, value: hiv_data.hiv_positive });
+    var BanPong = new longdo.Marker({ lon: 99.143543, lat: 19.385324, value: hiv_data.hiv_positive });
+    var NamPhrae = new longdo.Marker({ lon: 99.126720, lat: 19.342569, value: hiv_data.hiv_positive });
+    var KhueanPhak = new longdo.Marker({ lon: 99.175816, lat: 19.316975, value: hiv_data.hiv_positive });
+    var MaeWan = new longdo.Marker({ lon: 99.273319, lat: 19.296562, value: hiv_data.hiv_positive });
+    var MaePang = new longdo.Marker({ lon: 99.212208, lat: 19.215209, value: hiv_data.hiv_positive });
+    var LongKhot = new longdo.Marker({ lon: 99.195728, lat: 19.105919, value: hiv_data.hiv_positive });
+    // /*--------------------------------------------------------------*/
+
+    // /*-----Subdistrict in District chaipakarn-------*/
+    var PongTam = new longdo.Marker({ lon: 99.109383, lat: 19.758303, value: hiv_data.hiv_positive });
+    var SiDongYen = new longdo.Marker({ lon: 99.175644, lat: 19.646791, value: hiv_data.hiv_positive });
+    var MaeThalop = new longdo.Marker({ lon: 99.249115, lat: 19.729867, value: hiv_data.hiv_positive });
+    var NongBua = new longdo.Marker({ lon: 99.085350, lat: 19.727604, value: hiv_data.hiv_positive });
+    // /*--------------------------------------------------------------*/
+
+    // /*-----Subdistrict in District fang-------*/
+    var Wiang = new longdo.Marker({ lon: 99.227829, lat: 19.922358, value: hiv_data.hiv_positive });
+    var MonPin = new longdo.Marker({ lon: 99.085693, lat: 119.971413, value: hiv_data.hiv_positive });
+    var MaeNgon = new longdo.Marker({ lon: 99.077110, lat: 19.827111, value: hiv_data.hiv_positive });
+    var MaeSun = new longdo.Marker({ lon: 99.131355, lat: 19.850686, value: hiv_data.hiv_positive });
+    var SanSai = new longdo.Marker({ lon: 99.179420, lat: 19.885235, value: hiv_data.hiv_positive });
+    var MaeKha = new longdo.Marker({ lon: 99.275894, lat: 19.818552, value: hiv_data.hiv_positive });
+    var MaeKha = new longdo.Marker({ lon: 99.224911, lat: 19.774781, value: hiv_data.hiv_positive });
+    var PongNamRon = new longdo.Marker({ lon: 99.156675, lat: 19.974801, value: hiv_data.hiv_positive });
+    // /*--------------------------------------------------------------*/
+
+    // /*-----Subdistrict in District meaeye-------*/
+    var MaeAi = new longdo.Marker({ lon: 99.253407, lat: 20.070927, value: hiv_data.hiv_positive });
+    var MaeSao = new longdo.Marker({ lon: 99.202595, lat: 20.037709, value: hiv_data.hiv_positive });
+    var SanTonMue = new longdo.Marker({ lon: 99.275723, lat: 19.950921, value: hiv_data.hiv_positive });
+    var MaeNaWang = new longdo.Marker({ lon: 99.384899, lat: 19.987707, value: hiv_data.hiv_positive });
+    var ThaTon = new longdo.Marker({ lon: 99.440861, lat: 20.083503, value: hiv_data.hiv_positive });
+    var BanLuang = new longdo.Marker({ lon: 99.341984, lat: 19.874096, value: hiv_data.hiv_positive });
+    var Malika = new longdo.Marker({ lon: 99.316235, lat: 20.067380, value: hiv_data.hiv_positive });
+    // /*--------------------------------------------------------------*/
+
+    // /*-----Subdistrict in District waingheng-------*/
+    var MueangHaeng = new longdo.Marker({ lon: 98.637314, lat: 19.553643, value: hiv_data.hiv_positive });
+    var PiangLuang = new longdo.Marker({ lon: 98.668900, lat: 19.688496, value: hiv_data.hiv_positive });
+    var SaenHai = new longdo.Marker({ lon: 98.614998, lat: 19.640971, value: hiv_data.hiv_positive });
+    // /*--------------------------------------------------------------*/
+
+    // /*-----Subdistrict in District GalyaniVadhana-------*/
+    var BanChan = new longdo.Marker({ lon: 0, lat: 0, value: hiv_data.hiv_positive });
+    var MaeDaet = new longdo.Marker({ lon: 0, lat: 0, value: hiv_data.hiv_positive });
+    var ChaemLuang = new longdo.Marker({ lon: 0, lat: 0, value: hiv_data.hiv_positive });
+    /*--------------------------------------------------------------*/
+    // var chiangData = new longdo.Marker({ lon: chiangData.ampher.lon , lat: chiangData.ampher.lat ,value: hiv_data.hiv_positive });
+    // var chiangData = new longdo.Marker({ lon: chiangData.tumboun.lon , lat: chiangData.tumboun.lat ,value: hiv_data.hiv_positive });
+
+    function init() {
+        var map = new longdo.Map({
+            placeholder: document.getElementById('map'),
+            zoom: 11,
+            lastView: false,
+            location: {
+                lon: 98.979263,
+                lat: 18.796143,
+            }
+        });
+        map.Layers.setBase(longdo.Layers.GRAY);
+
+        // for (let data in chiangData) {
+        // map.Overlays.add(chiangData.ampher.name);
+        // map.Overlays.add(chiangData.tumboun.name);
+        //  }
+        /*-----set data marker in District in Chiang Mai Province-------------*/
+        map.Overlays.add(DoiSaket);
+        map.Overlays.add(doilo);
+        map.Overlays.add(doitao);
+        map.Overlays.add(MaeRim);
+        map.Overlays.add(SanSai);
+        map.Overlays.add(MueangChiangMai);
+        map.Overlays.add(Samoeng);
+        map.Overlays.add(MaeTaeng);
+        map.Overlays.add(MaeWang);
+        map.Overlays.add(HangDong);
+        map.Overlays.add(saraphi);
+        map.Overlays.add(SanKamphaeng);
+        map.Overlays.add(MaeOn);
+        map.Overlays.add(ChomThong);
+        map.Overlays.add(SanPaTong);
+        map.Overlays.add(Hord);
+        map.Overlays.add(Omkoi);
+        map.Overlays.add(ChiangDao);
+        map.Overlays.add(MaeChaem);
+        map.Overlays.add(Phrao);
+        map.Overlays.add(ChaiPrakan);
+        map.Overlays.add(Fang);
+        map.Overlays.add(MaeAi);
+        map.Overlays.add(wianghaeng);
+        map.Overlays.add(GalyaniVadhana);
+        // /*-----set data marker in District in Chiang Mai Province-------------*/
+
+        // /*-----Subdistrict in District doisaket-------*/
+        map.Overlays.add(ChoengDoi);
+        map.Overlays.add(SanPuLoei);
+        map.Overlays.add(LuangNuea);
+        map.Overlays.add(PaPong);
+        map.Overlays.add(SangaBan);
+        map.Overlays.add(PaLan);
+        map.Overlays.add(TalatKhwan);
+        map.Overlays.add(SamranRat);
+        map.Overlays.add(MaeKhue);
+        map.Overlays.add(TalatYai);
+        map.Overlays.add(MaeHoiNgoen);
+        map.Overlays.add(MaePong);
+        map.Overlays.add(PaMiang);
+        map.Overlays.add(ThepSadet);
+        // /*-----Subdistrict in District doisaket-------*/
+
+        // /*-----Subdistrict in District DoiLo-------*/
+        map.Overlays.add(DoiLo);
+        map.Overlays.add(SongKhwae);
+        map.Overlays.add(YangKhram);
+        map.Overlays.add(SantiSuk);
+        // /*-----Subdistrict in District DoiLo-------*/
+
+        // /*-----Subdistrict in District Doitao-------*/
+        map.Overlays.add(DoiTao);
+        map.Overlays.add(ThaDuea);
+        map.Overlays.add(MuetKa);
+        map.Overlays.add(BanAen);
+        map.Overlays.add(BongTan);
+        map.Overlays.add(PongThung);
+        // /*-----Subdistrict in District Doitao-------*/
+
+        // /*-----Subdistrict in District meirim-------*/
+        map.Overlays.add(RimTai);
+        map.Overlays.add(RimNuea);
+        map.Overlays.add(Khilekmerim);
+        map.Overlays.add(SanPong);
+        map.Overlays.add(NongHan);
+        map.Overlays.add(Saluang);
+        map.Overlays.add(HuaiSai);
+        map.Overlays.add(MaeRaem);
+        map.Overlays.add(PongYaeng);
+        map.Overlays.add(MaeSa);
+        map.Overlays.add(DonKaeo);
+        map.Overlays.add(MueangKaeo);
+        // /*-----Subdistrict in District meirim-------*/
+
+        // /*-----Subdistrict in District sunsai-------*/
+        map.Overlays.add(MaeFaekMai);
+        map.Overlays.add(MaeFaek);
+        map.Overlays.add(PaPhai);
+        map.Overlays.add(Khilek);
+        map.Overlays.add(NongYaeng);
+        map.Overlays.add(SanPaPao);
+        map.Overlays.add(SanSaiLuang);
+        map.Overlays.add(SanPhraNet);
+        map.Overlays.add(SanNaMeng);
+        map.Overlays.add(MueangLen);
+        map.Overlays.add(NongChom);
+        map.Overlays.add(SanSaiNoi);
+        // /*-----Subdistrict in District sunsai-------*/
+
+        // /*-----Subdistrict in District mueang-------*/
+        map.Overlays.add(SiPhum);
+        map.Overlays.add(PhraSing);
+        map.Overlays.add(Haiya);
+        map.Overlays.add(ChangMoi);
+        map.Overlays.add(ChangKhlan);
+        map.Overlays.add(WatKet);
+        map.Overlays.add(ChangPhueak);
+        map.Overlays.add(Suthep);
+        map.Overlays.add(MaeHia);
+        map.Overlays.add(PaDaet);
+        map.Overlays.add(NongHoi);
+        map.Overlays.add(ThaSala);
+        map.Overlays.add(NongPaKhrang);
+        map.Overlays.add(FaHam);
+        map.Overlays.add(PaTan);
+        map.Overlays.add(SanPhisuea);
+        // /*-----Subdistrict in District mueang-------*/
+
+        // /*-----Subdistrict in District samaung-------*/
+        map.Overlays.add(SamoengTai);
+        map.Overlays.add(SamoengNuea);
+        map.Overlays.add(MaeSap);
+        map.Overlays.add(BoKaeo);
+        map.Overlays.add(YangMoen);
+        // /*-----Subdistrict in District samaung-------*/
+
+        // /*-----Subdistrict in District meiteng-------*/
+        map.Overlays.add(SanMahaPhon);
+        map.Overlays.add(MaeTaeng);
+        map.Overlays.add(Khilek);
+        map.Overlays.add(ChoLae);
+        map.Overlays.add(MaeHoPhra);
+        map.Overlays.add(SopPoeng);
+        map.Overlays.add(SanPaYang);
+        map.Overlays.add(BanPao);
+        map.Overlays.add(PaPae);
+        map.Overlays.add(MueangKai);
+        map.Overlays.add(BanChang);
+        map.Overlays.add(KuetChang);
+        map.Overlays.add(Inthakhin);
+        // /*-----Subdistrict in District meiteng-------*/
+
+        // /*-----Subdistrict in District meiwang-------*/
+        map.Overlays.add(BanKat);
+        map.Overlays.add(ThungPi);
+        map.Overlays.add(ThungRuangThong);
+        map.Overlays.add(MaeWin);
+        map.Overlays.add(DonPao);
+        // /*-----Subdistrict in District meiwang-------*/
+
+        // /*-----Subdistrict in District hangdong-------*/
+        map.Overlays.add(HangDong);
+        map.Overlays.add(NongKaeo);
+        map.Overlays.add(HanKaeo);
+        map.Overlays.add(NongTong);
+        map.Overlays.add(KhunKhong);
+        map.Overlays.add(SopMaeKha);
+        map.Overlays.add(BanWaen);
+        map.Overlays.add(SanPhakWan);
+        map.Overlays.add(NongKhwai);
+        map.Overlays.add(BanPong);
+        map.Overlays.add(NamPhrae);
+        // /*-----Subdistrict in District hangdong-------*/
+
+        // /*-----Subdistrict in District sarape-------*/
+        map.Overlays.add(YangNoeng);
+        map.Overlays.add(Saraphi);
+        map.Overlays.add(ChomPhu);
+        map.Overlays.add(ChaiSathan);
+        map.Overlays.add(KhuaMung);
+        map.Overlays.add(NongFaek);
+        map.Overlays.add(NongPhueng);
+        map.Overlays.add(ThaKwang);
+        map.Overlays.add(DonKaeo);
+        map.Overlays.add(ThaWangTan);
+        map.Overlays.add(SanSai);
+        map.Overlays.add(PaBong);
+        /*-----Subdistrict in District sarape-------*/
+
+        /*-----Subdistrict in District sankumpeng-------*/
+        map.Overlays.add(SanKamphaeng);
+        map.Overlays.add(SaiMun);
+        map.Overlays.add(RongWuaDaeng);
+        map.Overlays.add(BuakKhang);
+        map.Overlays.add(ChaeChang);
+        map.Overlays.add(OnTai);
+        map.Overlays.add(MaePuKha);
+        map.Overlays.add(HuaiSai);
+        map.Overlays.add(TonPao);
+        map.Overlays.add(SanKlang);
+        /*-----Subdistrict in District sankumpeng-------*/
+
+        // /*-----Subdistrict in District meiaon-------*/
+        map.Overlays.add(OnNuea);
+        map.Overlays.add(OnKlang);
+        map.Overlays.add(BanSahakon);
+        map.Overlays.add(HuaiKaeo);
+        map.Overlays.add(MaeTha);
+        map.Overlays.add(ThaNuea);
+        // /*-----Subdistrict in District meiaon-------*/
+
+        // /*-----Subdistrict in District jomtong-------*/
+        map.Overlays.add(BanLuang);
+        map.Overlays.add(BanPae);
+        map.Overlays.add(DoiKaeo);
+        map.Overlays.add(KhuangPao);
+        map.Overlays.add(MaeSoi);
+        map.Overlays.add(SopTia);
+        // /*-----Subdistrict in District jomtong-------*/
+
+        // /*-----Subdistrict in District sanpatong-------*/
+        map.Overlays.add(Yuwa);
+        map.Overlays.add(SanKlang);
+        map.Overlays.add(ThaWangPhrao);
+        map.Overlays.add(MakhamLuang);
+        map.Overlays.add(MaeKa);
+        map.Overlays.add(BanMae);
+        map.Overlays.add(BanKlang);
+        map.Overlays.add(ThungSatok);
+        map.Overlays.add(ThungTom);
+        map.Overlays.add(NamBoLuang);
+        map.Overlays.add(MakhunWan);
+        // /*-----Subdistrict in District sanpatong-------*/
+
+        // /*-----Subdistrict in District hord-------*/
+        map.Overlays.add(HangDong);
+        map.Overlays.add(Hot);
+        map.Overlays.add(BanTan);
+        map.Overlays.add(BoLuang);
+        map.Overlays.add(BoSali);
+        map.Overlays.add(NaKhoRuea);
+        // /*-----Subdistrict in District hord-------*/
+
+        // /*-----Subdistrict in District aomgoy-------*/
+        map.Overlays.add(Omkoi);
+        map.Overlays.add(YangPiang);
+        map.Overlays.add(MaeTuen);
+        map.Overlays.add(MonChong);
+        map.Overlays.add(MaeLong);
+        map.Overlays.add(NaKian);
+        // /*-----Subdistrict in District aomgoy-------*/
+
+        // /*-----Subdistrict in District chiangdaw-------*/
+        map.Overlays.add(ChiangDao);
+        map.Overlays.add(MueangNa);
+        map.Overlays.add(MueangNgai);
+        map.Overlays.add(MaeNa);
+        map.Overlays.add(MueangKhong);
+        map.Overlays.add(PingKhong);
+        map.Overlays.add(ThungKhaoPhuang);
+        // /*-----Subdistrict in District chiangdaw-------*/
+
+        // /*-----Subdistrict in District meajame-------*/
+        map.Overlays.add(ChangKhoeng);
+        map.Overlays.add(ThaPha);
+        map.Overlays.add(BanThap);
+        map.Overlays.add(MaeSuek);
+        map.Overlays.add(MaeNaChon);
+        map.Overlays.add(PangHinFon);
+        map.Overlays.add(KongKhaek);
+        // /*-----Subdistrict in District meajame-------*/
+
+        // /*-----Subdistrict in District praw-------*/
+        map.Overlays.add(Wiang);
+        map.Overlays.add(ThungLuang);
+        map.Overlays.add(PaTum);
+        map.Overlays.add(PaNai);
+        map.Overlays.add(SanSai);
+        map.Overlays.add(BanPong);
+        map.Overlays.add(NamPhrae);
+        map.Overlays.add(KhueanPhak);
+        map.Overlays.add(MaeWan);
+        map.Overlays.add(MaePang);
+        map.Overlays.add(LongKhot);
+        // /*-----Subdistrict in District praw-------*/
+
+        // /*-----Subdistrict in District chaipakarn-------*/
+        map.Overlays.add(PongTam);
+        map.Overlays.add(SiDongYen);
+        map.Overlays.add(MaeThalop);
+        map.Overlays.add(NongBua);
+        // /*-----Subdistrict in District chaipakarn-------*/
+
+        // /*-----Subdistrict in District fang-------*/
+        map.Overlays.add(Wiang);
+        map.Overlays.add(MonPin);
+        map.Overlays.add(MaeNgon);
+        map.Overlays.add(MaeSun);
+        map.Overlays.add(SanSai);
+        map.Overlays.add(MaeKha);
+        map.Overlays.add(MaeKha);
+        map.Overlays.add(PongNamRon);
+        // /*-----Subdistrict in District fang-------*/
+
+        // /*-----Subdistrict in District meaeye-------*/
+        map.Overlays.add(MaeAi);
+        map.Overlays.add(MaeSao);
+        map.Overlays.add(SanTonMue);
+        map.Overlays.add(MaeNaWang);
+        map.Overlays.add(ThaTon);
+        map.Overlays.add(BanLuang);
+        map.Overlays.add(Malika);
+        // /*-----Subdistrict in District meaeye-------*/
+
+        // /*-----Subdistrict in District waingheng-------*/
+        map.Overlays.add(MueangHaeng);
+        map.Overlays.add(PiangLuang);
+        map.Overlays.add(SaenHai);
+        // /*-----Subdistrict in District waingheng-------*/
+
+        // /*-----Subdistrict in District GalyaniVadhana-------*/
+        map.Overlays.add(BanChan);
+        map.Overlays.add(MaeDaet);
+        map.Overlays.add(ChaemLuang);
+        // /*-----Subdistrict in District GalyaniVadhana-------*/
+
+    }
+</script>
+
+</html>
